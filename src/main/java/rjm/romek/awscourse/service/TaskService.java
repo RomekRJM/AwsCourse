@@ -11,7 +11,7 @@ public class TaskService {
     public Boolean checkTask(Task task) {
 
         if (task.getDone()) {
-            return task.getDone();
+            return Boolean.TRUE;
         }
 
         final Class<? extends TaskValidator> validatorClass = task.getValidator();

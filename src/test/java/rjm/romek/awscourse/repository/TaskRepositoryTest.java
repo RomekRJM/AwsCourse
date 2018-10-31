@@ -23,7 +23,7 @@ public class TaskRepositoryTest {
     private ChapterRepository chapterRepository;
 
     @Test
-    public void testSave() {
+    public void testSaveAndDelete() {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
