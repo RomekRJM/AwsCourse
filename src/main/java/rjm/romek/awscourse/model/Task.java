@@ -23,6 +23,9 @@ public class Task {
     private Boolean done;
     private Class<? extends TaskValidator> validator;
 
+    public Task () {
+    }
+
     public Task(Chapter chapter, String title, String description, Boolean done, Class<? extends TaskValidator> validator) {
         this.chapter = chapter;
         this.title = title;
