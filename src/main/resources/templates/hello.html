@@ -5,7 +5,6 @@
     <title>Chapter</title>
 </head>
 <body>
-<h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>
 <br/>
 <br/>
 <h2 th:inline="text">Chapter [[${chapter.title}]]</h2>
@@ -14,7 +13,7 @@
 </ul>
 <br/>
 <br/>
-<h2 th:inline="text">Task [[${#httpServletRequest.remoteUser}]]</h2>
+<h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
