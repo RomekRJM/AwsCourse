@@ -17,14 +17,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc(secure=false)
-public class S3ChapterControlerTest {
+public class S3ChapterControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void shouldGetChapterAndTasks() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get(S3ChapterController.PATH))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString("Chapter Test")));
