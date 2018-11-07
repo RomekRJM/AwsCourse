@@ -16,7 +16,7 @@ import rjm.romek.awscourse.repository.TaskRepository;
 @Controller
 public class S3ChapterControler {
 
-    public static final String PATH = "hello";
+    public static final String PATH = "chapter";
     public static final String CHAPTER = "chapter";
     public static final String TASKS = "tasks";
     public static final String CHAPTER_ID = "chapterId";
@@ -27,7 +27,7 @@ public class S3ChapterControler {
     @Autowired
     private TaskRepository taskRepository;
 
-    @GetMapping("/")
+    @GetMapping({"/", "/chapter"})
     public String chapter(@RequestParam(name=CHAPTER_ID, required=false, defaultValue="1") Long chapterId, Model model) {
         Chapter chapter = chapterRepository.findById(chapterId).get();
         List<Task> tasks = taskRepository.findByChapter(chapter);
