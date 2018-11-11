@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>Chapter</title>
+
+<head th:insert="fragments/head.html :: head">
+    <title>AWS Course</title>
 </head>
+
 <body>
-<br/>
-<br/>
-<h2 th:inline="text">Chapter [[${chapter.title}]]</h2>
-<ul th:each="task : ${tasks}">
-    <li th:text="${task.description}">Name</li>
-</ul>
-<br/>
-<br/>
-<h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+
+<div class="container">
+    <h2 th:inline="text">Chapter [[${chapter.title}]]</h2>
+    <ul th:each="task : ${tasks}">
+        <li th:text="${task.description}">Name</li>
+    </ul>
+    <br/>
+    <br/>
+    <h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>
+    <form th:action="@{/logout}" method="post">
+        <div class="form-group">
+            <input type="submit" class="btn btn-default" value="Sign Out"/>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>
