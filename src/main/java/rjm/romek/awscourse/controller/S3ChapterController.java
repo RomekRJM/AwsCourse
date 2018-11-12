@@ -27,7 +27,7 @@ public class S3ChapterController {
     @Autowired
     private TaskRepository taskRepository;
 
-    @GetMapping("/chapter")
+    @GetMapping({"/", "/chapter"})
     public String chapter(@RequestParam(name=CHAPTER_ID, required=false, defaultValue="1") Long chapterId, Model model) {
         Chapter chapter = chapterRepository.findById(chapterId).get();
         List<Task> tasks = taskRepository.findByChapter(chapter);

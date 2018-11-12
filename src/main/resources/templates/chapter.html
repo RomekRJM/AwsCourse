@@ -17,8 +17,8 @@
     <br/>
     <h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>
     <form th:action="@{/logout}" method="post">
-        <div class="form-group">
-            <input type="submit" class="btn btn-default" value="Sign Out"/>
+        <div>
+            <input type="submit" class="btn btn-primary" value="Sign Out"/>
         </div>
     </form>
 </div>
