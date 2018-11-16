@@ -14,6 +14,6 @@ public class BucketExistsValidator implements TaskValidator {
 
     @Override
     public Boolean isCompleted(Task task) {
-        return s3Service.bucketExists("");
+        return s3Service.bucketExists(task.getAnswer());
     }
 }

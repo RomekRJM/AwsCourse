@@ -1,10 +1,12 @@
 package rjm.romek.awscourse.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 
 import rjm.romek.awscourse.validator.TaskValidator;
 
@@ -19,8 +21,14 @@ public class Task {
     private Chapter chapter;
 
     private String title;
+
     private String description;
+
+    @Column(nullable = false)
     private Boolean done;
+
+    private String answer;
+
     private Class<? extends TaskValidator> validator;
 
     public Task () {
@@ -32,6 +40,12 @@ public class Task {
         this.description = description;
         this.done = done;
         this.validator = validator;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if(done == null)
+            done = Boolean.FALSE;
     }
 
     public Class<? extends TaskValidator> getValidator() {
@@ -80,6 +94,14 @@ public class Task {
 
     public void setChapter(Chapter chapter) {
         this.chapter = chapter;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
 }

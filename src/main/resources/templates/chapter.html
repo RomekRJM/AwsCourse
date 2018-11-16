@@ -4,14 +4,24 @@
 
 <head th:insert="fragments/head.html :: head">
     <title>AWS Course</title>
+
+    <script>
+        $(document).ready(
+            function() {
+                setInterval(function() {
+                    location.reload(true);
+                }, 5000);
+            });
+    </script>
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="tasksContainer">
     <h2 th:inline="text">Chapter [[${chapter.title}]]</h2>
     <ul th:each="task : ${tasks}">
-        <li th:text="${task.description}">Name</li>
+        <li>[[${task.description}]] [[${task.done} ? 'DONE' : 'NOT DONE']]</li>
     </ul>
     <br/>
     <br/>
