@@ -24,6 +24,13 @@
         <li>[[${task.description}]] [[${task.done} ? 'DONE' : 'NOT DONE']]</li>
     </ul>
     <br/>
+    <form th:action="@{/chapter}" method="post">
+        <div>
+            <label for="bucketName">I named my bucket</label>
+            <input type="text" id="bucketName" placeholder="bucketname-123456" modelAttribute="bucketName">
+            <input type="submit" class="btn btn-primary" value="Sign Out"/>
+        </div>
+    </form>
     <br/>
     <h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>
     <form th:action="@{/logout}" method="post">
