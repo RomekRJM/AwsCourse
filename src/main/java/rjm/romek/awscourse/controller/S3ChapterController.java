@@ -2,6 +2,7 @@ package rjm.romek.awscourse.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,8 +38,9 @@ public class S3ChapterController {
     private TaskRepository taskRepository;
 
     @GetMapping({"/", "/chapter/{id}"})
-    public ModelAndView showForm(@PathVariable Long id) {
-        return new ModelAndView(PATH, loadChapterAndTasks(id, ""));
+    public ModelAndView showForm(@PathVariable Optional<Long> id) {
+        Long chapterId = id.orElse(1l);
+        return new ModelAndView(PATH, loadChapterAndTasks(chapterId, ""));
     }
 
     @PostMapping({"/", "/chapter"})
