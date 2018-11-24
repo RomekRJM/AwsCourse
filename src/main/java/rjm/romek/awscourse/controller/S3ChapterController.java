@@ -20,6 +20,7 @@ import rjm.romek.awscourse.model.Chapter;
 import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.repository.ChapterRepository;
 import rjm.romek.awscourse.repository.TaskRepository;
+import rjm.romek.awscourse.service.TaskService;
 
 @Controller
 public class S3ChapterController {
@@ -37,10 +38,13 @@ public class S3ChapterController {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private TaskService taskService;
+
     @GetMapping({"/", "/chapter", "/chapter/{id}"})
     public ModelAndView showForm(@PathVariable Optional<Long> id) {
         Long chapterId = id.orElse(1l);
-        return new ModelAndView(PATH, loadChapterAndTasks(chapterId, ""));
+        return new ModelAndView(PATH, prepareModelMap(chapterId));
     }
 
     @PostMapping({"/", "/chapter"})
@@ -48,16 +52,21 @@ public class S3ChapterController {
                           @RequestParam(value="id", required=true) Long id,
                           @RequestParam(value="answer", required=true) String answer,
                           Model model) {
-        model.addAllAttributes(loadChapterAndTasks(id, answer));
+
+        Map<String, Object> modelMap = prepareModelMap(id);
+        List<Task> tasks = (List<Task>)modelMap.get(TASKS);
+        tasks.forEach(t -> taskService.checkTaskAndSaveAnswer(t, answer));
+        taskRepository.saveAll(tasks);
+
+        model.addAllAttributes(modelMap);
         return PATH;
     }
 
-    private Map<String, Object> loadChapterAndTasks(Long chapterId, String answer) {
+    private Map<String, Object> prepareModelMap(Long chapterId) {
         Map<String, Object> modelMap = new ModelMap();
 
         Chapter chapter = chapterRepository.findById(chapterId).get();
         List<Task> tasks = taskRepository.findByChapter(chapter);
-        tasks.forEach(t -> t.setAnswer(answer));
 
         modelMap.put(CHAPTER, chapter);
         modelMap.put(TASKS, tasks);
