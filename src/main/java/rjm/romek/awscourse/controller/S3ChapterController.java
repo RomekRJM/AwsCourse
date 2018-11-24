@@ -37,7 +37,7 @@ public class S3ChapterController {
     @Autowired
     private TaskRepository taskRepository;
 
-    @GetMapping({"/", "/chapter/{id}"})
+    @GetMapping({"/", "/chapter", "/chapter/{id}"})
     public ModelAndView showForm(@PathVariable Optional<Long> id) {
         Long chapterId = id.orElse(1l);
         return new ModelAndView(PATH, loadChapterAndTasks(chapterId, ""));
@@ -57,7 +57,7 @@ public class S3ChapterController {
 
         Chapter chapter = chapterRepository.findById(chapterId).get();
         List<Task> tasks = taskRepository.findByChapter(chapter);
-        tasks.get(0).setAnswer(answer);
+        tasks.forEach(t -> t.setAnswer(answer));
 
         modelMap.put(CHAPTER, chapter);
         modelMap.put(TASKS, tasks);
