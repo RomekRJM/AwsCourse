@@ -27,7 +27,6 @@ public class S3ChapterController {
     public static final String NEXT = "next";
     public static final String CHAPTER = "chapter";
     public static final String TASKS = "tasks";
-    public static final String CHAPTER_ID = "chapterId";
     public static final String ANSWER = "answer";
     public static final String ID_PARAM = "id";
     public static final String CSRF_PARAM = "_csrf";

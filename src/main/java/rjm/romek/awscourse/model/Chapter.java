@@ -21,6 +21,11 @@ public class Chapter {
         this.title = title;
     }
 
+    public Chapter(Long chapterId, String title) {
+        this.chapterId = chapterId;
+        this.title = title;
+    }
+
     public Long getChapterId() {
         return chapterId;
     }

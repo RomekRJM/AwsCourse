@@ -19,7 +19,7 @@ public class ChapterRepositoryTest {
 
     @Test
     public void testSaveAndDelete() {
-        chapterRepository.save(new Chapter("title"));
+        chapterRepository.save(new Chapter(1l, "title"));
         assertEquals(1, chapterRepository.count());
 
         chapterRepository.deleteAll();
