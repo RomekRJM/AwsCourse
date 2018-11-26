@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,19 +39,19 @@ public class TaskServiceTest {
     @Test
     public void checkTaskShouldReturnTrueOnDoneTask() throws Exception {
         when(task.getDone()).thenReturn(Boolean.TRUE);
-        assertTrue(taskService.checkTaskAndSaveAnswer(task, ""));
+        assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));
     }
 
     @Test
     public void checkTaskShouldReturnValidatorIsCompleteResult() throws Exception {
         when(task.getDone()).thenReturn(Boolean.FALSE);
-        assertTrue(taskService.checkTaskAndSaveAnswer(task, ""));
+        assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));
     }
 
     @Test(expected = RuntimeException.class)
     public void checkTaskShouldThrowRuntimeException() throws Exception {
         doReturn(FailingTaskValidator.class).when(task).getValidator();
-        assertTrue(taskService.checkTaskAndSaveAnswer(task, ""));
+        assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));
     }
 
 }

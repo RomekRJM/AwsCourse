@@ -1,5 +1,7 @@
 package rjm.romek.awscourse.service;
 
+import java.util.Map;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Boolean checkTaskAndSaveAnswer(Task task, String answer) {
+    public Boolean checkTaskAndSaveAnswer(Task task, Map<String, String> answers) {
 
         if (task.getDone()) {
             return Boolean.TRUE;
@@ -34,7 +36,7 @@ public class TaskService {
             throw new RuntimeException(e);
         }
 
-        task.setAnswer(answer);
+        task.setAnswers(answers);
         Boolean done = taskValidator.isCompleted(task);
         task.setDone(done);
         taskRepository.save(task);

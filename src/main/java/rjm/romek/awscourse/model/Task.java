@@ -1,5 +1,7 @@
 package rjm.romek.awscourse.model;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
+import javax.persistence.Transient;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 
 import rjm.romek.awscourse.validator.TaskValidator;
 
@@ -28,6 +34,9 @@ public class Task {
     private Boolean done;
 
     private String answer;
+
+    @Transient
+    private Map<String, String> answers;
 
     private Class<? extends TaskValidator> validator;
 
@@ -96,12 +105,22 @@ public class Task {
         this.chapter = chapter;
     }
 
-    public String getAnswer() {
+    private String getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    private void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public Map<String, String> getAnswers() {
+        answers = Splitter.on(",").withKeyValueSeparator("=").split(getAnswer());
+        return answers;
+    }
+
+    public void setAnswers(Map<String, String> answers) {
+        this.answers = answers;
+        setAnswer(Joiner.on(",").withKeyValueSeparator("=").join(answers));
     }
 
 }

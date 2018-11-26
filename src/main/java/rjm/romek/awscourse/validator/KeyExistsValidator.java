@@ -9,7 +9,7 @@ import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.service.S3Service;
 
 @Component
-public class BucketExistsValidator implements TaskValidator {
+public class KeyExistsValidator implements TaskValidator {
 
     @Autowired
     private S3Service s3Service;
@@ -17,6 +17,8 @@ public class BucketExistsValidator implements TaskValidator {
     @Override
     public Boolean isCompleted(Task task) {
         Map<String, String> answers = task.getAnswers();
-        return s3Service.bucketExists(answers.getOrDefault("bucketName", ""));
+        return s3Service.keyExists(answers.getOrDefault("bucketName", ""),
+                answers.getOrDefault("keyName", ""));
     }
+
 }

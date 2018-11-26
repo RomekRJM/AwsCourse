@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +29,8 @@ public class S3ChapterController {
     public static final String TASKS = "tasks";
     public static final String CHAPTER_ID = "chapterId";
     public static final String ANSWER = "answer";
+    public static final String ID_PARAM = "id";
+    public static final String CSRF_PARAM = "_csrf";
 
     @Autowired
     private ChapterRepository chapterRepository;
@@ -48,15 +48,15 @@ public class S3ChapterController {
     }
 
     @PostMapping({"/", "/chapter"})
-    public String chapter(HttpServletRequest request,
-                          @RequestParam(value="id", required=true) Long id,
-                          @RequestParam(value="answer", required=true) String answer,
+    public String chapter(@RequestParam(value="id", required=true) Long id,
+                          @RequestParam Map<String,String> allRequestParams,
                           Model model) {
 
         Map<String, Object> modelMap = prepareModelMap(id);
         List<Task> tasks = (List<Task>)modelMap.get(TASKS);
-        tasks.forEach(t -> taskService.checkTaskAndSaveAnswer(t, answer));
-        taskRepository.saveAll(tasks);
+
+        final Map<String, String> answers = removeUselessEntries(allRequestParams);
+        tasks.forEach(t -> taskService.checkTaskAndSaveAnswer(t, answers));
 
         model.addAllAttributes(modelMap);
         return PATH;
@@ -72,5 +72,11 @@ public class S3ChapterController {
         modelMap.put(TASKS, tasks);
 
         return modelMap;
+    }
+
+    private Map<String, String> removeUselessEntries(Map<String, String> map) {
+        map.remove(ID_PARAM);
+        map.remove(CSRF_PARAM);
+        return map;
     }
 }

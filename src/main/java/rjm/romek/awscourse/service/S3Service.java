@@ -14,4 +14,8 @@ public class S3Service {
     public boolean bucketExists(String bucketName) {
         return s3Client.doesBucketExistV2(bucketName);
     }
+
+    public boolean keyExists(String bucketName, String keyName) {
+        return s3Client.doesObjectExist(bucketName, keyName);
+    }
 }
