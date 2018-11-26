@@ -37,12 +37,6 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void checkTaskShouldReturnTrueOnDoneTask() throws Exception {
-        when(task.getDone()).thenReturn(Boolean.TRUE);
-        assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));
-    }
-
-    @Test
     public void checkTaskShouldReturnValidatorIsCompleteResult() throws Exception {
         when(task.getDone()).thenReturn(Boolean.FALSE);
         assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));

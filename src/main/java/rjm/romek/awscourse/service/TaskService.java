@@ -22,11 +22,6 @@ public class TaskService {
     }
 
     public Boolean checkTaskAndSaveAnswer(Task task, Map<String, String> answers) {
-
-        if (task.getDone()) {
-            return Boolean.TRUE;
-        }
-
         final Class<? extends TaskValidator> validatorClass = task.getValidator();
         TaskValidator taskValidator = null;
 
