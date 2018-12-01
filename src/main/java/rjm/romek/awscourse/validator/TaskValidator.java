@@ -1,7 +1,7 @@
 package rjm.romek.awscourse.validator;
 
-import rjm.romek.awscourse.model.Task;
+import rjm.romek.awscourse.model.UserTask;
 
 public interface TaskValidator {
-    public Boolean isCompleted(Task task);
+    public Boolean isCompleted(UserTask userTask);
 }

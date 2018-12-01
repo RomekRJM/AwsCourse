@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Chapter {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long chapterId;
 
     private String title;

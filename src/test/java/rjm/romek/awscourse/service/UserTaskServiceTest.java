@@ -15,37 +15,42 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import rjm.romek.awscourse.model.Task;
-import rjm.romek.awscourse.repository.TaskRepository;
+import rjm.romek.awscourse.model.UserTask;
+import rjm.romek.awscourse.repository.UserTaskRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TaskServiceTest {
+public class UserTaskServiceTest {
 
     @Mock
     private Task task;
 
     @Mock
-    private TaskRepository taskRepository;
+    private UserTask userTask;
 
-    private TaskService taskService;
+    @Mock
+    private UserTaskRepository userTaskRepository;
+
+    private UserTaskService taskService;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        doReturn(task).when(userTask).getTask();
         doReturn(DummyTaskValidator.class).when(task).getValidator();
-        taskService = new TaskService(taskRepository);
+        taskService = new UserTaskService(userTaskRepository);
     }
 
     @Test
     public void checkTaskShouldReturnValidatorIsCompleteResult() throws Exception {
-        when(task.getDone()).thenReturn(Boolean.FALSE);
-        assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));
+        when(userTask.getDone()).thenReturn(Boolean.FALSE);
+        assertTrue(taskService.checkTaskAndSaveAnswer(userTask, Collections.emptyMap()));
     }
 
     @Test(expected = RuntimeException.class)
     public void checkTaskShouldThrowRuntimeException() throws Exception {
         doReturn(FailingTaskValidator.class).when(task).getValidator();
-        assertTrue(taskService.checkTaskAndSaveAnswer(task, Collections.emptyMap()));
+        assertTrue(taskService.checkTaskAndSaveAnswer(userTask, Collections.emptyMap()));
     }
 
 }

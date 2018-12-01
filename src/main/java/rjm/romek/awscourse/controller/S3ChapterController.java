@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import rjm.romek.awscourse.model.Chapter;
-import rjm.romek.awscourse.model.Task;
+import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.repository.ChapterRepository;
 import rjm.romek.awscourse.repository.TaskRepository;
-import rjm.romek.awscourse.service.TaskService;
+import rjm.romek.awscourse.repository.UserTaskRepository;
+import rjm.romek.awscourse.service.UserTaskService;
+import rjm.romek.awscourse.session.SessionInfo;
 
 @Controller
 public class S3ChapterController {
@@ -38,7 +40,13 @@ public class S3ChapterController {
     private TaskRepository taskRepository;
 
     @Autowired
-    private TaskService taskService;
+    private UserTaskRepository userTaskRepository;
+
+    @Autowired
+    private UserTaskService taskService;
+
+    @Autowired
+    private SessionInfo sessionInfo;
 
     @GetMapping({"/", "/chapter", "/chapter/{id}"})
     public ModelAndView showForm(@PathVariable Optional<Long> id) {
@@ -52,7 +60,7 @@ public class S3ChapterController {
                           Model model) {
 
         Map<String, Object> modelMap = prepareModelMap(id);
-        List<Task> tasks = (List<Task>)modelMap.get(TASKS);
+        List<UserTask> tasks = (List<UserTask>)modelMap.get(TASKS);
 
         final Map<String, String> answers = removeUselessEntries(allRequestParams);
         tasks.forEach(t -> taskService.checkTaskAndSaveAnswer(t, answers));
@@ -65,7 +73,7 @@ public class S3ChapterController {
         Map<String, Object> modelMap = new ModelMap();
 
         Chapter chapter = chapterRepository.findById(chapterId).get();
-        List<Task> tasks = taskRepository.findByChapter(chapter);
+        List<UserTask> tasks = userTaskRepository.findAllByUserAndTask_Chapter(sessionInfo.getCurrentUser(), chapter);
 
         modelMap.put(CHAPTER, chapter);
         modelMap.put(TASKS, tasks);

@@ -1,6 +1,6 @@
 package rjm.romek.awscourse.service;
 
-import rjm.romek.awscourse.model.Task;
+import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.validator.TaskValidator;
 
 class FailingTaskValidator implements TaskValidator {
@@ -10,7 +10,7 @@ class FailingTaskValidator implements TaskValidator {
     }
 
     @Override
-    public Boolean isCompleted(Task task) {
+    public Boolean isCompleted(UserTask userTask) {
         return Boolean.FALSE;
     }
 }

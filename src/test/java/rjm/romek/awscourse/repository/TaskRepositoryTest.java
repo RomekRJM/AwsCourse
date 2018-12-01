@@ -30,7 +30,7 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task = new Task(chapter, "Task", "Description", Boolean.FALSE, BucketExistsValidator.class);
+        Task task = new Task(chapter, "Task", "Description", BucketExistsValidator.class);
 
         taskRepository.save(task);
         assertEquals(1, taskRepository.count());
@@ -41,8 +41,8 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task1 = new Task(chapter, "Task1", "Description", Boolean.FALSE, BucketExistsValidator.class);
-        Task task2 = new Task(chapter, "Task2", "Description", Boolean.FALSE, BucketExistsValidator.class);
+        Task task1 = new Task(chapter, "Task1", "Description", BucketExistsValidator.class);
+        Task task2 = new Task(chapter, "Task2", "Description", BucketExistsValidator.class);
 
         taskRepository.save(task1);
         taskRepository.save(task2);
