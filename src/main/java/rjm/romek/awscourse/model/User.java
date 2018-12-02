@@ -1,9 +1,11 @@
 package rjm.romek.awscourse.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(name="user_id")
+    private Long userId;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -24,15 +27,18 @@ public class User {
 
     private Boolean enabled;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Task> tasks;
+    @ElementCollection
+    private Set<String> roles;
 
-    public Long getId() {
-        return id;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserTask> userTasks = new HashSet<UserTask>();
+
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -59,12 +65,19 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Set<Task> getTasks() {
-        return tasks;
+    public Set<UserTask> getUserTasks() {
+        return userTasks;
     }
 
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
+    public void setUserTasks(Set<UserTask> userTasks) {
+        this.userTasks = userTasks;
     }
 
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
 }

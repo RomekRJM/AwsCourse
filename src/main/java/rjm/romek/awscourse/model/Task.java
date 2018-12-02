@@ -1,8 +1,10 @@
 package rjm.romek.awscourse.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="task_id")
     private Long taskId;
 
     @ManyToOne
@@ -28,8 +31,8 @@ public class Task {
 
     private Class<? extends TaskValidator> validator;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<User> users;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserTask> userTasks = new HashSet<UserTask>();
 
     public Task () {
     }
@@ -81,12 +84,11 @@ public class Task {
         this.chapter = chapter;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<UserTask> getUserTasks() {
+        return userTasks;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUserTasks(Set<UserTask> userTasks) {
+        this.userTasks = userTasks;
     }
-
 }

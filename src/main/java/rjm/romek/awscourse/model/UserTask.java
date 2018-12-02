@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
@@ -14,16 +15,17 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 @Entity
+@IdClass(UserTaskPK.class)
 public class UserTask {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(referencedColumnName = "user_id")
     private User user;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "task_id")
+    @JoinColumn(referencedColumnName = "task_id")
     private Task task;
 
     @Column(nullable = false)

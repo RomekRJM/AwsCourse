@@ -1,11 +1,21 @@
 package rjm.romek.awscourse.model;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
+    public static final User ANONYMOUS_USER = new User();
+    public static final String ANONYMOUS_USERNAME = "anonymousUser";
+
+    static {
+        ANONYMOUS_USER.setUsername(ANONYMOUS_USERNAME);
+    }
+
     private User user;
 
     public UserPrincipal(User user) {
@@ -14,7 +24,10 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        user.getRoles().add("ROLE_USER");
+        user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
+        return grantedAuthorities;
     }
 
     @Override
