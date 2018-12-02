@@ -1,13 +1,9 @@
 package rjm.romek.awscourse.model;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Chapter {
@@ -17,9 +13,6 @@ public class Chapter {
     private Long chapterId;
 
     private String title;
-
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval=true)
-    private Set<Task> tasks;
 
     public Chapter() {
     }
@@ -49,11 +42,4 @@ public class Chapter {
         this.title = title;
     }
 
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
-    }
 }

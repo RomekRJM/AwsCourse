@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import rjm.romek.awscourse.validator.TaskValidator;
 
 @Entity
@@ -23,6 +26,7 @@ public class Task {
     private Long taskId;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Chapter chapter;
 
     private String title;
