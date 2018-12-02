@@ -1,12 +1,15 @@
 package rjm.romek.awscourse.model;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
-    private User user;
+
+    private transient User user;
 
     public UserPrincipal(User user) {
         this.user = user;
@@ -14,7 +17,9 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        //user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
+        return grantedAuthorities;
     }
 
     @Override
@@ -45,5 +50,9 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.getEnabled();
+    }
+
+    public User getUser() {
+        return user;
     }
 }

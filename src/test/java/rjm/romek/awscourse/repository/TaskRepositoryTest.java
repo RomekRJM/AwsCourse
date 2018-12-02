@@ -5,10 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import rjm.romek.awscourse.model.Chapter;
@@ -16,7 +17,7 @@ import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.validator.BucketExistsValidator;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest
 public class TaskRepositoryTest {
 
     @Autowired
@@ -25,12 +26,18 @@ public class TaskRepositoryTest {
     @Autowired
     private ChapterRepository chapterRepository;
 
+    @Before
+    public void setUp() {
+        taskRepository.deleteAll();
+        chapterRepository.deleteAll();
+    }
+
     @Test
     public void testSaveAndDelete() {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task = new Task(chapter, "Task", "Description", Boolean.FALSE, BucketExistsValidator.class);
+        Task task = new Task(chapter, "Task", "Description", BucketExistsValidator.class);
 
         taskRepository.save(task);
         assertEquals(1, taskRepository.count());
@@ -41,15 +48,15 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task1 = new Task(chapter, "Task1", "Description", Boolean.FALSE, BucketExistsValidator.class);
-        Task task2 = new Task(chapter, "Task2", "Description", Boolean.FALSE, BucketExistsValidator.class);
+        Task task1 = new Task(chapter, "Task1", "Description", BucketExistsValidator.class);
+        Task task2 = new Task(chapter, "Task2", "Description", BucketExistsValidator.class);
 
         taskRepository.save(task1);
         taskRepository.save(task2);
 
         List<Task> tasks = taskRepository.findByChapter(chapter);
-        assertTrue(tasks.contains(task1));
-        assertTrue(tasks.contains(task2));
+        assertTrue(tasks.stream().anyMatch(x -> x.getTaskId() == task1.getTaskId()));
+        assertTrue(tasks.stream().anyMatch(x -> x.getTaskId() == task1.getTaskId()));
     }
 
 }
