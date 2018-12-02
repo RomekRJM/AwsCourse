@@ -5,18 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
-    public static final User ANONYMOUS_USER = new User();
-    public static final String ANONYMOUS_USERNAME = "anonymousUser";
 
-    static {
-        ANONYMOUS_USER.setUsername(ANONYMOUS_USERNAME);
-    }
-
-    private User user;
+    private transient User user;
 
     public UserPrincipal(User user) {
         this.user = user;
@@ -25,8 +18,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        user.getRoles().add("ROLE_USER");
-        user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
+        //user.getRoles().forEach(role -> grantedAuthorities.add(new SimpleGrantedAuthority(role)));
         return grantedAuthorities;
     }
 
@@ -58,5 +50,9 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.getEnabled();
+    }
+
+    public User getUser() {
+        return user;
     }
 }

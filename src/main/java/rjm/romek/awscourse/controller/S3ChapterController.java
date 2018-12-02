@@ -7,7 +7,6 @@ import java.util.Optional;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -51,14 +50,12 @@ public class S3ChapterController {
     @Resource(name = "sessionInfo")
     private SessionInfo sessionInfo;
 
-    @Secured("ROLE_USER")
     @GetMapping({"/", "/chapter", "/chapter/{id}"})
     public ModelAndView showForm(@PathVariable Optional<Long> id) {
         Long chapterId = id.orElse(1l);
         return new ModelAndView(PATH, prepareModelMap(chapterId));
     }
 
-    @Secured("ROLE_USER")
     @PostMapping({"/", "/chapter"})
     public String chapter(@RequestParam(value="id", required=true) Long id,
                           @RequestParam Map<String,String> allRequestParams,
