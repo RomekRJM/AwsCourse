@@ -1,21 +1,27 @@
 package rjm.romek.awscourse.repository;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import rjm.romek.awscourse.model.Chapter;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest
 public class ChapterRepositoryTest {
 
     @Autowired
     private ChapterRepository chapterRepository;
+
+    @Before
+    public void setUp() {
+        chapterRepository.deleteAll();
+    }
 
     @Test
     public void testSaveAndDelete() {
