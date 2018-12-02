@@ -18,6 +18,14 @@ import com.google.common.base.Splitter;
 @IdClass(UserTaskPK.class)
 public class UserTask {
 
+    public UserTask() {
+    }
+
+    public UserTask(User user, Task task) {
+        this.user = user;
+        this.task = task;
+    }
+
     @Id
     @ManyToOne
     @JoinColumn(referencedColumnName = "user_id")

@@ -52,7 +52,7 @@ public class S3ChapterController {
 
     @GetMapping({"/", "/chapter", "/chapter/{id}"})
     public ModelAndView showForm(@PathVariable Optional<Long> id) {
-        Long chapterId = id.orElse(1l);
+        Long chapterId = id.orElse(1000l);
         return new ModelAndView(PATH, prepareModelMap(chapterId));
     }
 

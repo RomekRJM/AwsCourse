@@ -15,6 +15,14 @@ import javax.persistence.OneToMany;
 @Entity
 public class User {
 
+    public User() {
+
+    }
+
+    public User(String username) {
+        this.username = username;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="user_id")

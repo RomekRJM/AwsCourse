@@ -41,6 +41,10 @@ public class Task {
     public Task () {
     }
 
+    public Task (Chapter chapter) {
+        this.chapter = chapter;
+    }
+
     public Task(Chapter chapter, String title, String description, Class<? extends TaskValidator> validator) {
         this.chapter = chapter;
         this.title = title;

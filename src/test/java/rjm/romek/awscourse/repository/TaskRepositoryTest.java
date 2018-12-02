@@ -1,15 +1,13 @@
 package rjm.romek.awscourse.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import rjm.romek.awscourse.model.Chapter;
@@ -17,7 +15,7 @@ import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.validator.BucketExistsValidator;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@DataJpaTest
 public class TaskRepositoryTest {
 
     @Autowired
@@ -26,12 +24,6 @@ public class TaskRepositoryTest {
     @Autowired
     private ChapterRepository chapterRepository;
 
-    @Before
-    public void setUp() {
-        taskRepository.deleteAll();
-        chapterRepository.deleteAll();
-    }
-
     @Test
     public void testSaveAndDelete() {
         Chapter chapter = new Chapter("Chapter");
@@ -39,8 +31,8 @@ public class TaskRepositoryTest {
 
         Task task = new Task(chapter, "Task", "Description", BucketExistsValidator.class);
 
-        taskRepository.save(task);
-        assertEquals(1, taskRepository.count());
+        task = taskRepository.save(task);
+        assertTrue(taskRepository.findById(task.getTaskId()).isPresent());
     }
 
     @Test
