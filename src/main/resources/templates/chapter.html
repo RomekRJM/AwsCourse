@@ -28,8 +28,8 @@
             <input type="submit" class="btn btn-primary" value="Next"/>
         </div>
     </form>
-    <ul th:each="task : ${tasks}">
-        <li>[[${task.description}]] [[${task.done} ? 'DONE' : 'NOT DONE']]</li>
+    <ul th:each="ut : ${tasks}">
+        <li>[[${ut.task?.description}]] [[${ut.done} ? 'DONE' : 'NOT DONE']]</li>
     </ul>
     <br/>
     <br/>

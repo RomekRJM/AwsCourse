@@ -19,8 +19,8 @@ public class ChapterRepositoryTest {
 
     @Test
     public void testSaveAndDelete() {
-        chapterRepository.save(new Chapter(1l, "title"));
-        assertTrue(chapterRepository.findById(1l).isPresent());
+        Chapter chapter = chapterRepository.save(new Chapter("title"));
+        assertTrue(chapterRepository.findById(chapter.getChapterId()).isPresent());
     }
 
 }
