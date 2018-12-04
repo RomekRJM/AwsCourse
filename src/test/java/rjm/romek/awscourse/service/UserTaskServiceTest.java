@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.model.UserTask;
+import rjm.romek.awscourse.repository.TaskRepository;
 import rjm.romek.awscourse.repository.UserTaskRepository;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +32,9 @@ public class UserTaskServiceTest {
     @Mock
     private UserTaskRepository userTaskRepository;
 
+    @Mock
+    private TaskRepository taskRepository;
+
     private UserTaskService taskService;
 
     @Before
@@ -38,7 +42,7 @@ public class UserTaskServiceTest {
         MockitoAnnotations.initMocks(this);
         doReturn(task).when(userTask).getTask();
         doReturn(DummyTaskValidator.class).when(task).getValidator();
-        taskService = new UserTaskService(userTaskRepository);
+        taskService = new UserTaskService(userTaskRepository, taskRepository);
     }
 
     @Test

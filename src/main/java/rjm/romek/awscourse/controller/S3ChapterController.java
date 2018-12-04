@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import rjm.romek.awscourse.model.Chapter;
+import rjm.romek.awscourse.model.User;
+import rjm.romek.awscourse.model.UserPrincipal;
 import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.repository.ChapterRepository;
-import rjm.romek.awscourse.repository.TaskRepository;
-import rjm.romek.awscourse.repository.UserTaskRepository;
 import rjm.romek.awscourse.service.UserTaskService;
-import rjm.romek.awscourse.session.SessionInfo;
 
 @Controller
 public class S3ChapterController {
@@ -39,43 +37,36 @@ public class S3ChapterController {
     private ChapterRepository chapterRepository;
 
     @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private UserTaskRepository userTaskRepository;
-
-    @Autowired
-    private UserTaskService taskService;
-
-    @Resource(name = "sessionInfo")
-    private SessionInfo sessionInfo;
+    private UserTaskService userTaskService;
 
     @GetMapping({"/", "/chapter", "/chapter/{id}"})
-    public ModelAndView showForm(@PathVariable Optional<Long> id) {
+    public ModelAndView showForm(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                 @PathVariable Optional<Long> id) {
         Long chapterId = id.orElse(1000l);
-        return new ModelAndView(PATH, prepareModelMap(chapterId));
+        return new ModelAndView(PATH, prepareModelMap(userPrincipal.getUser(), chapterId));
     }
 
     @PostMapping({"/", "/chapter"})
-    public String chapter(@RequestParam(value="id", required=true) Long id,
+    public String chapter(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                          @RequestParam(value="id", required=true) Long id,
                           @RequestParam Map<String,String> allRequestParams,
                           Model model) {
 
-        Map<String, Object> modelMap = prepareModelMap(id);
+        Map<String, Object> modelMap = prepareModelMap(userPrincipal.getUser(), id);
         List<UserTask> tasks = (List<UserTask>)modelMap.get(TASKS);
 
         final Map<String, String> answers = removeUselessEntries(allRequestParams);
-        tasks.forEach(t -> taskService.checkTaskAndSaveAnswer(t, answers));
+        tasks.forEach(t -> userTaskService.checkTaskAndSaveAnswer(t, answers));
 
         model.addAllAttributes(modelMap);
         return PATH;
     }
 
-    private Map<String, Object> prepareModelMap(Long chapterId) {
+    private Map<String, Object> prepareModelMap(User user, Long chapterId) {
         Map<String, Object> modelMap = new ModelMap();
 
         Chapter chapter = chapterRepository.findById(chapterId).get();
-        List<UserTask> tasks = userTaskRepository.findAllByUserAndTask_Chapter(sessionInfo.getCurrentUser(), chapter);
+        List<UserTask> tasks = userTaskService.getOrCreate(user, chapter);
 
         modelMap.put(CHAPTER, chapter);
         modelMap.put(TASKS, tasks);
