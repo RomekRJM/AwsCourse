@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
@@ -30,18 +29,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-
-        if( user != null ) {
-            return user.getUsername();
-        }
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails) {
-            return ((UserDetails)principal).getUsername();
-        } else {
-            return principal.toString();
-        }
+        return user != null ? user.getUsername() : null;
     }
 
     @Override
