@@ -7,8 +7,8 @@
 
     <script>
         $(document).ready(
-            function() {
-                setInterval(function() {
+            function () {
+                setInterval(function () {
                     location.reload(true);
                 }, 5000);
             });
@@ -23,14 +23,17 @@
     <form th:action="@{/chapter}" method="POST" modelAttribute="answer">
         <div>
             <input type="hidden" th:name="id" th:value="${chapter.chapterId}"/>
-            <label for="answer">I named my bucket</label>
-            <input type="text" id="answer" th:name="answer" placeholder="bucketname-123456">
+
+            <ul th:each="ut : ${tasks}">
+                <li>
+                    <label for="bucketName">[[${ut.task?.description}]]</label>
+                    <input type="text" id="bucketName" th:name="bucketName" th:value="${ut.answers.get('bucketName')}"/>
+                    [[${ut.done} ? 'DONE' : 'NOT DONE']]
+                </li>
+            </ul>
             <input type="submit" class="btn btn-primary" value="Next"/>
         </div>
     </form>
-    <ul th:each="ut : ${tasks}">
-        <li>[[${ut.task?.description}]] [[${ut.done} ? 'DONE' : 'NOT DONE']]</li>
-    </ul>
     <br/>
     <br/>
     <h2 th:inline="text">Logged in as [[${#httpServletRequest.remoteUser}]]</h2>

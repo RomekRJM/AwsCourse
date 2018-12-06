@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import java.security.Principal;
 
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,6 +33,9 @@ public class ReLoginFilterTest {
 
     @Mock
     private FilterChain filterChain;
+
+    @Mock
+    private FilterConfig filterConfig;
 
     @Mock
     private Principal principal;
@@ -66,6 +71,12 @@ public class ReLoginFilterTest {
 
         verify(response, times(1)).encodeRedirectURL(anyString());
         verify(filterChain, times(0)).doFilter(request, response);
+    }
+
+    @Test
+    public void testLifecycle() throws ServletException {
+        reLoginFilter.init(filterConfig);
+        reLoginFilter.destroy();
     }
 
 }

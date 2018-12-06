@@ -1,5 +1,6 @@
 package rjm.romek.awscourse.model;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -39,7 +42,7 @@ public class UserTask {
     @Column(nullable = false)
     private Boolean done;
 
-    private String answer;
+    private String answer = "";
 
     @Transient
     private Map<String, String> answers;
@@ -48,6 +51,9 @@ public class UserTask {
     public void prePersist() {
         if(done == null)
             done = Boolean.FALSE;
+
+        if(answer == null)
+            answer = "";
     }
 
     public User getUser() {
@@ -83,6 +89,10 @@ public class UserTask {
     }
 
     public Map<String, String> getAnswers() {
+        if (StringUtils.isBlank(this.answer)) {
+            return Collections.emptyMap();
+        }
+
         answers = Splitter.on(",").withKeyValueSeparator("=").split(getAnswer());
         return answers;
     }
