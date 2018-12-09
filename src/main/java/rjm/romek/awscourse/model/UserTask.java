@@ -1,6 +1,5 @@
 package rjm.romek.awscourse.model;
 
-import java.util.Collections;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -12,10 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
+import rjm.romek.awscourse.util.StringMapper;
 
 @Entity
 @IdClass(UserTaskPK.class)
@@ -89,16 +85,12 @@ public class UserTask {
     }
 
     public Map<String, String> getAnswers() {
-        if (StringUtils.isBlank(this.answer)) {
-            return Collections.emptyMap();
-        }
-
-        answers = Splitter.on(",").withKeyValueSeparator("=").split(getAnswer());
+        answers = StringMapper.toMap(this.answer);
         return answers;
     }
 
     public void setAnswers(Map<String, String> answers) {
         this.answers = answers;
-        setAnswer(Joiner.on(",").withKeyValueSeparator("=").join(answers));
+        setAnswer(StringMapper.toString(this.answers));
     }
 }
