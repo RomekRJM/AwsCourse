@@ -20,7 +20,7 @@ public class DescriptionFragment {
         return text;
     }
 
-    public Boolean isInput() {
+    public Boolean getInput() {
         return input;
     }
 

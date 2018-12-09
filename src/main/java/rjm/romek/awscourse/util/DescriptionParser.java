@@ -1,14 +1,15 @@
 package rjm.romek.awscourse.util;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
 public class DescriptionParser {
 
+    private static final char CBEGIN = '{';
+    private static final char CEND = '}';
+    private static final char CINVISIBLE = '*';
     private static final String BEGIN = "{";
     private static final String END = "}";
     private static final String INVISIBLE = "*";
@@ -23,14 +24,14 @@ public class DescriptionParser {
         for(char c : description.toCharArray()) {
             append = false;
 
-            if (c == BEGIN.charAt(0)) {
+            if (c == CBEGIN) {
                 inParamName = true;
                 addIfNotEmptyAndClearStringBuilder(fragments, sb, Boolean.FALSE, Boolean.TRUE);
                 visible = true;
-            } else if (c == END.charAt(0)) {
+            } else if (c == CEND) {
                 inParamName = false;
                 addIfNotEmptyAndClearStringBuilder(fragments, sb, Boolean.TRUE, visible);
-            } else if (c == INVISIBLE.charAt(0) && inParamName) {
+            } else if (c == CINVISIBLE && inParamName) {
                 visible = false;
             } else {
                 append = true;
@@ -54,23 +55,7 @@ public class DescriptionParser {
         sb.delete(0, sb.length());
     }
 
-    private static Map<String, Boolean> extractParameterNamesAndVisibility(String s) {
-        String [] params = StringUtils.substringsBetween(s, BEGIN, END);
-
-        if(params == null) {
-            return null;
-        }
-
-        Map<String, Boolean> parameters = new LinkedHashMap<>();
-
-        for (String p : params) {
-            if(p.startsWith(INVISIBLE)) {
-                parameters.put(p.substring(1), Boolean.FALSE);
-            } else {
-                parameters.put(p, Boolean.TRUE);
-            }
-        }
-
-        return parameters;
+    public static String [] extractParameterNames(String s) {
+        return StringUtils.substringsBetween(s, BEGIN, END);
     }
 }

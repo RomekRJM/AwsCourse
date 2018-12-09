@@ -1,6 +1,7 @@
 package rjm.romek.awscourse.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import rjm.romek.awscourse.util.DescriptionFragment;
+import rjm.romek.awscourse.util.DescriptionParser;
 import rjm.romek.awscourse.validator.TaskValidator;
 
 @Entity
@@ -82,6 +85,14 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String [] getParameterNamesFromDescription() {
+        return DescriptionParser.extractParameterNames(description);
+    }
+
+    public List<DescriptionFragment> getDescriptionFragments() {
+        return DescriptionParser.parseDescription(description);
     }
 
     public Chapter getChapter() {
