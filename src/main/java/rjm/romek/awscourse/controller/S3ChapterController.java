@@ -29,7 +29,7 @@ public class S3ChapterController {
     public static final String NEXT = "next";
     public static final String CHAPTER = "chapter";
     public static final String TASKS = "tasks";
-    public static final String ANSWER = "answer";
+    public static final String ERROR = "error";
     public static final String ID_PARAM = "id";
     public static final String CSRF_PARAM = "_csrf";
 
@@ -56,7 +56,14 @@ public class S3ChapterController {
         List<UserTask> tasks = (List<UserTask>)modelMap.get(TASKS);
 
         final Map<String, String> answers = removeUselessEntries(allRequestParams);
-        tasks.forEach(t -> userTaskService.checkTaskAndSaveAnswer(t, answers));
+
+        for (UserTask task : tasks) {
+            try {
+                userTaskService.checkTaskAndSaveAnswer(task, answers);
+            } catch (Exception exc) {
+                addExceptionMessage(modelMap, task, exc);
+            }
+        }
 
         model.addAllAttributes(modelMap);
         return PATH;
@@ -78,5 +85,9 @@ public class S3ChapterController {
         map.remove(ID_PARAM);
         map.remove(CSRF_PARAM);
         return map;
+    }
+
+    private void addExceptionMessage(Map<String, Object> modelMap, UserTask task, Exception exception) {
+        modelMap.put(ERROR + task.getTask().getTaskId(), exception.getMessage());
     }
 }

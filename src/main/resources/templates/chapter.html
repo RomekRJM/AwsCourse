@@ -29,8 +29,13 @@
                     <div class="d-inline" th:unless="${df.input}">[[${df.text}]]</div>
                 </div>
                 [[${ut.done} ? 'DONE' : 'NOT DONE']]
+                <br/>
+                <small id="errors" class="text-danger">
+                    [[${#vars.getVariable('error'+ut.task?.taskId)}]]
+                </small>
             </div>
         </div>
+        <br/>
         <input type="submit" class="btn btn-primary" value="Next"/>
 </div>
 </form>
