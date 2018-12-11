@@ -5,4 +5,4 @@ INSERT INTO chapter(chapter_id, title) VALUES(1000, 'S3');
 
 INSERT INTO task (task_id, description, title, validator, chapter_chapter_id)
 VALUES (1000, 'Create a S3 bucket {bucketName} and create file {keyName} inside it.',
-        'S3 Bucket', 'rjm.romek.awscourse.validator.BucketExistsValidator', 1000);
+        'S3 Bucket', 'rjm.romek.awscourse.validator.KeyExistsValidator', 1000);

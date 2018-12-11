@@ -25,7 +25,7 @@
             <input type="hidden" th:name="id" th:value="${chapter.chapterId}"/>
             <div class="d-inline" th:each="ut : ${tasks}">
                 <div class="d-inline" th:each="df : ${ut.task?.getDescriptionFragments()}">
-                    <input class="d-inline" th:if="${df.input}" type="text" id="${df.text}" th:name="${df.text}"/>
+                    <input class="d-inline" th:if="${df.input}" type="text" id="${df.text}" th:name="${df.text}" th:value="${ut.answers.get(df.text)}">
                     <div class="d-inline" th:unless="${df.input}">[[${df.text}]]</div>
                 </div>
                 [[${ut.done} ? 'DONE' : 'NOT DONE']]
