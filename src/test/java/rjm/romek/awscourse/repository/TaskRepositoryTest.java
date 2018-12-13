@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import rjm.romek.awscourse.model.Chapter;
 import rjm.romek.awscourse.model.Task;
-import rjm.romek.awscourse.validator.BucketExistsValidator;
+import rjm.romek.awscourse.validator.KeyExistsValidator;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -29,7 +29,7 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task = new Task(chapter, "Task", "Description", BucketExistsValidator.class);
+        Task task = new Task(chapter, "Task", "Description", KeyExistsValidator.class);
 
         task = taskRepository.save(task);
         assertTrue(taskRepository.findById(task.getTaskId()).isPresent());
@@ -40,8 +40,8 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task1 = new Task(chapter, "Task1", "Description", BucketExistsValidator.class);
-        Task task2 = new Task(chapter, "Task2", "Description", BucketExistsValidator.class);
+        Task task1 = new Task(chapter, "Task1", "Description", KeyExistsValidator.class);
+        Task task2 = new Task(chapter, "Task2", "Description", KeyExistsValidator.class);
 
         taskRepository.save(task1);
         taskRepository.save(task2);
