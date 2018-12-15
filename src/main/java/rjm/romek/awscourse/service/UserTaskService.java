@@ -14,7 +14,7 @@ import rjm.romek.awscourse.model.User;
 import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.repository.TaskRepository;
 import rjm.romek.awscourse.repository.UserTaskRepository;
-import rjm.romek.awscourse.validator.TaskValidator;
+import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Service
 public class UserTaskService {
@@ -42,17 +42,17 @@ public class UserTaskService {
     }
 
     public Boolean checkTaskAndSaveAnswer(UserTask userTask, Map<String, String> answers) {
-        final Class<? extends TaskValidator> validatorClass = userTask.getTask().getValidator();
-        TaskValidator taskValidator = null;
+        final Class<? extends TaskVerifier> validatorClass = userTask.getTask().getVerifier();
+        TaskVerifier taskVerifier = null;
 
         try {
-            taskValidator = SpringContext.getAppContext().getBean(validatorClass);
+            taskVerifier = SpringContext.getAppContext().getBean(validatorClass);
         } catch (BeansException e) {
             throw new RuntimeException(e);
         }
 
         userTask.setAnswers(answers);
-        Boolean done = taskValidator.isCompleted(userTask);
+        Boolean done = taskVerifier.isCompleted(userTask);
         userTask.setDone(done);
         userTaskRepository.save(userTask);
 

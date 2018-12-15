@@ -1,11 +1,11 @@
 package rjm.romek.awscourse.service;
 
 import rjm.romek.awscourse.model.UserTask;
-import rjm.romek.awscourse.validator.TaskValidator;
+import rjm.romek.awscourse.verifier.TaskVerifier;
 
-class FailingTaskValidator implements TaskValidator {
+class FailingTaskVerifier implements TaskVerifier {
 
-    public FailingTaskValidator() throws InstantiationException {
+    public FailingTaskVerifier() throws InstantiationException {
         throw new InstantiationException();
     }
 

@@ -3,12 +3,12 @@ package rjm.romek.awscourse.service;
 import org.springframework.stereotype.Component;
 
 import rjm.romek.awscourse.model.UserTask;
-import rjm.romek.awscourse.validator.TaskValidator;
+import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Component
-class DummyTaskValidator implements TaskValidator {
+class DummyTaskVerifier implements TaskVerifier {
 
-    public DummyTaskValidator() {
+    public DummyTaskVerifier() {
 
     }
 

@@ -1,4 +1,4 @@
-package rjm.romek.awscourse.validator;
+package rjm.romek.awscourse.verifier.s3;
 
 import java.util.Map;
 
@@ -7,9 +7,10 @@ import org.springframework.stereotype.Component;
 
 import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.service.S3Service;
+import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Component
-public class VersioningEnabledValidator implements TaskValidator {
+public class VersioningEnabledVerifier implements TaskVerifier {
 
     @Autowired
     private S3Service s3Service;

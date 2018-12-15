@@ -18,7 +18,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import rjm.romek.awscourse.util.DescriptionFragment;
 import rjm.romek.awscourse.util.DescriptionParser;
-import rjm.romek.awscourse.validator.TaskValidator;
+import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Entity
 public class Task {
@@ -36,7 +36,7 @@ public class Task {
 
     private String description;
 
-    private Class<? extends TaskValidator> validator;
+    private Class<? extends TaskVerifier> verifier;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserTask> userTasks = new HashSet<UserTask>();
@@ -48,19 +48,19 @@ public class Task {
         this.chapter = chapter;
     }
 
-    public Task(Chapter chapter, String title, String description, Class<? extends TaskValidator> validator) {
+    public Task(Chapter chapter, String title, String description, Class<? extends TaskVerifier> verifier) {
         this.chapter = chapter;
         this.title = title;
         this.description = description;
-        this.validator = validator;
+        this.verifier = verifier;
     }
 
-    public Class<? extends TaskValidator> getValidator() {
-        return validator;
+    public Class<? extends TaskVerifier> getVerifier() {
+        return verifier;
     }
 
-    public void setValidator(Class<? extends TaskValidator> validator) {
-        this.validator = validator;
+    public void setVerifier(Class<? extends TaskVerifier> verifier) {
+        this.verifier = verifier;
     }
 
     public Long getTaskId() {

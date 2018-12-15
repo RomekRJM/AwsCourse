@@ -41,7 +41,7 @@ public class UserTaskServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         doReturn(task).when(userTask).getTask();
-        doReturn(DummyTaskValidator.class).when(task).getValidator();
+        doReturn(DummyTaskVerifier.class).when(task).getVerifier();
         taskService = new UserTaskService(userTaskRepository, taskRepository);
     }
 
@@ -53,7 +53,7 @@ public class UserTaskServiceTest {
 
     @Test(expected = RuntimeException.class)
     public void checkTaskShouldThrowRuntimeException() throws Exception {
-        doReturn(FailingTaskValidator.class).when(task).getValidator();
+        doReturn(FailingTaskVerifier.class).when(task).getVerifier();
         assertTrue(taskService.checkTaskAndSaveAnswer(userTask, Collections.emptyMap()));
     }
 
