@@ -23,7 +23,7 @@ import rjm.romek.awscourse.repository.ChapterRepository;
 import rjm.romek.awscourse.service.UserTaskService;
 
 @Controller
-public class S3ChapterController {
+public class ChapterController {
 
     public static final String PATH = "chapter";
     public static final String NEXT = "next";
