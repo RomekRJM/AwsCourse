@@ -3,6 +3,7 @@ package rjm.romek.awscourse.util;
 public class DescriptionFragment {
 
     private final String text;
+    private final String value;
     private final Boolean input;
     private final Boolean visible;
 
@@ -11,9 +12,14 @@ public class DescriptionFragment {
     }
 
     public DescriptionFragment(String text, Boolean input, Boolean visible) {
+        this(text, input, visible, null);
+    }
+
+    public DescriptionFragment(String text, Boolean input, Boolean visible, String value) {
         this.text = text;
         this.input = input;
         this.visible = visible;
+        this.value = value;
     }
 
     public String getText() {
@@ -22,6 +28,10 @@ public class DescriptionFragment {
 
     public Boolean getInput() {
         return input;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public Boolean isVisible() {
@@ -37,6 +47,7 @@ public class DescriptionFragment {
 
         if (text != null ? !text.equals(that.text) : that.text != null) return false;
         if (input != null ? !input.equals(that.input) : that.input != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
         return visible != null ? visible.equals(that.visible) : that.visible == null;
     }
 }

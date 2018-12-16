@@ -27,19 +27,21 @@ public class DescriptionParserTest {
     }
 
     public static final String S1 = "Do something";
-    public static final String S2 = "{*key}";
-    public static final String S3 = "Create S3 bucket named {*bucket} and place file {key} in it.";
+    public static final String S2 = "(*key)";
+    public static final String S3 = "Create S3 bucket named (*bucket) and place file (key) in it.";
+    public static final String S4 = "(*standard_storage=30)";
 
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 {S1, 0, new DescriptionFragment("Do something", Boolean.FALSE), null },
-                {S2, 0, new DescriptionFragment("key", Boolean.TRUE, Boolean.FALSE), new String[]{"*key"} },
-                {S3, 0, new DescriptionFragment("Create S3 bucket named ", Boolean.FALSE), new String[]{"*bucket", "key"}  },
-                {S3, 1, new DescriptionFragment("bucket", Boolean.TRUE, Boolean.FALSE), new String[]{"*bucket", "key"} },
-                {S3, 2, new DescriptionFragment(" and place file ", Boolean.FALSE), new String[]{"*bucket", "key"} },
-                {S3, 3, new DescriptionFragment("key", Boolean.TRUE, Boolean.TRUE), new String[]{"*bucket", "key"} },
-                {S3, 4, new DescriptionFragment(" in it.", Boolean.FALSE), new String[]{"*bucket", "key"} },
+                {S2, 0, new DescriptionFragment("key", Boolean.TRUE, Boolean.FALSE), new String[]{"key"} },
+                {S3, 0, new DescriptionFragment("Create S3 bucket named ", Boolean.FALSE), new String[]{"bucket", "key"}  },
+                {S3, 1, new DescriptionFragment("bucket", Boolean.TRUE, Boolean.FALSE), new String[]{"bucket", "key"} },
+                {S3, 2, new DescriptionFragment(" and place file ", Boolean.FALSE), new String[]{"bucket", "key"} },
+                {S3, 3, new DescriptionFragment("key", Boolean.TRUE, Boolean.TRUE), new String[]{"bucket", "key"} },
+                {S3, 4, new DescriptionFragment(" in it.", Boolean.FALSE), new String[]{"bucket", "key"} },
+                {S4, 0, new DescriptionFragment("standard_storage", Boolean.TRUE, Boolean.FALSE, "30"), new String[]{"standard_storage"} },
         });
     }
 
