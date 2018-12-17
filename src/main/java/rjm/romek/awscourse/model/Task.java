@@ -2,6 +2,7 @@ package rjm.romek.awscourse.model;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,7 +26,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="task_id")
+    @Column(name = "task_id")
     private Long taskId;
 
     @ManyToOne
@@ -41,10 +42,10 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserTask> userTasks = new HashSet<UserTask>();
 
-    public Task () {
+    public Task() {
     }
 
-    public Task (Chapter chapter) {
+    public Task(Chapter chapter) {
         this.chapter = chapter;
     }
 
@@ -87,8 +88,12 @@ public class Task {
         this.description = description;
     }
 
-    public String [] getParameterNamesFromDescription() {
+    public String[] getParameterNamesFromDescription() {
         return DescriptionParser.extractParameterNames(description);
+    }
+
+    public Map<String, String> getParametersFromDescription() {
+        return DescriptionParser.extractParameters(description);
     }
 
     public List<DescriptionFragment> getDescriptionFragments() {

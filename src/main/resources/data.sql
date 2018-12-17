@@ -17,6 +17,6 @@ VALUES (1001, 'Ensure versioning is enabled for it.(*bucketName)',
 INSERT INTO task (task_id, description, title, verifier, chapter_chapter_id)
 VALUES (1002,
         CONCAT('Enable lifecycle policy for the bucket. Use standard storage class for first 30 days, ',
-               'then move it to standard infrequent for next 60 days and after that to glacier.',
-               '(*standard_infrequent=30)(*glacier=90)'),
-        'S3 Bucket', 'rjm.romek.awscourse.verifier.s3.VersioningEnabledVerifier', 1000);
+               'then move it to standard infrequent and after that to glacier - 90 days after creation.',
+               '(*STANDARD_IA=30)(*GLACIER=90)'),
+        'S3 Bucket', 'rjm.romek.awscourse.verifier.s3.LifecyclePolicyVerifier', 1000);

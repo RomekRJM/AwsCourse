@@ -16,10 +16,6 @@ public class S3Service {
     @Autowired
     private AmazonS3 s3Client;
 
-    public boolean bucketExists(String bucketName) {
-        return s3Client.doesBucketExistV2(bucketName);
-    }
-
     public boolean keyExists(String bucketName, String keyName) {
         return s3Client.doesObjectExist(bucketName, keyName);
     }
@@ -33,17 +29,16 @@ public class S3Service {
 
     public boolean anyLifecyclePolicyMatches(String bucketName, List<BucketLifecycleConfiguration.Transition> transitions) {
         BucketLifecycleConfiguration bucketLifecycleConfiguration = s3Client.getBucketLifecycleConfiguration(bucketName);
+
+        if (bucketLifecycleConfiguration == null) {
+            return false;
+        }
+
         final List<BucketLifecycleConfiguration.Rule> rules = bucketLifecycleConfiguration.getRules();
 
         for (BucketLifecycleConfiguration.Rule rule : rules) {
             List<BucketLifecycleConfiguration.Transition> ruleTransitions = rule.getTransitions();
-            int matching = 0;
-
-            if (ruleTransitions.stream().anyMatch(t -> transitionIn(t, transitions))) {
-                ++matching;
-            }
-
-            if (matching == transitions.size()) {
+            if (ruleTransitions.stream().filter(t -> transitionIn(t, transitions)).count() == transitions.size()) {
                 return true;
             }
         }
@@ -65,7 +60,7 @@ public class S3Service {
             }
 
             if (t1.getStorageClassAsString().equals(t2.getStorageClassAsString())
-                    && t2.getDays() == t2.getDays()) {
+                    && t1.getDays() == t2.getDays()) {
                 return true;
             }
         }
