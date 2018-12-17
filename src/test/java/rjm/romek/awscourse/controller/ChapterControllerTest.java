@@ -31,7 +31,7 @@ import rjm.romek.awscourse.repository.TaskRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class S3ChapterControllerTest {
+public class ChapterControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,7 +53,7 @@ public class S3ChapterControllerTest {
     @Test
     @WithUserDetails("tester")
     public void shouldGetChapterAndTasks() throws Exception {
-        mockMvc.perform(get("/" + S3ChapterController.PATH))
+        mockMvc.perform(get("/" + ChapterController.PATH))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString("Chapter Test")));
@@ -63,7 +63,7 @@ public class S3ChapterControllerTest {
     @WithUserDetails("tester")
     public void shouldPostChapterAndTasks() throws Exception {
         mockMvc.perform(
-                post("/" + S3ChapterController.PATH)
+                post("/" + ChapterController.PATH)
                         .param("id", testChapter.getChapterId().toString())
                         .param("answer", "blah-blah-0987")
                         .with(csrf())
