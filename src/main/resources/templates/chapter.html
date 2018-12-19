@@ -4,23 +4,16 @@
 
 <head th:insert="fragments/head.html :: head">
     <title>AWS Course</title>
-
-    <script>
-        $(document).ready(
-            function () {
-                setInterval(function () {
-                    location.reload(true);
-                }, 5000);
-            });
-    </script>
-
 </head>
 
 <body>
 
 <div class="container" id="tasksContainer">
     <h2 th:inline="text">Chapter [[${chapter.title}]]</h2>
-    <form th:action="${allDone} ? ${nextChapter} : @{/chapter}" th:method="${allDone} ? 'GET' : 'POST'" modelAttribute="answer">
+    <form th:action="${allDone} ? ${nextChapter} : @{/chapter}"
+          th:method="${allDone} ? 'GET' : 'POST'"
+          modelAttribute="answer"
+          th:onsubmit="sanitiseFormData()">
         <div class="d-inline">
             <input type="hidden" th:name="id" th:value="${chapter.chapterId}"/>
             <ul class="d-inline" th:each="ut : ${tasks}">
@@ -56,6 +49,13 @@
         </form>
     </div>
 </div>
+
+<script>
+    window.sanitiseFormData = function(poop) {
+        $("form[method=get] input").attr("disabled", "disabled");
+        return true;
+    }
+</script>
 
 </body>
 </html>
