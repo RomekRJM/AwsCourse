@@ -1,9 +1,9 @@
 package rjm.romek.awscourse.util;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,16 +69,18 @@ public class DescriptionParser {
     }
 
     public static Map<String, String> extractParameters(final String description) {
-        return DescriptionParser.parseDescription(description).stream()
+        Map<String, String> parameters = new LinkedHashMap();
+        DescriptionParser.parseDescription(description).stream()
                 .filter(x -> x.getInput())
-                .collect(Collectors.toMap(DescriptionFragment::getText, DescriptionFragment::getValue));
+                .forEach(x ->parameters.put(x.getText(), x.getValue()));
+        return parameters;
     }
 
     public static String[] extractParameterNames(String s) {
         String[] parameters = StringUtils.substringsBetween(s, BEGIN, END);
 
         if (parameters == null) {
-            return null;
+            return new String[0];
         }
 
         String[] parameterNames = new String[parameters.length];

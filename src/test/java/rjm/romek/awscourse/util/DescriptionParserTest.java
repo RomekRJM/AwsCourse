@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ public class DescriptionParserTest {
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {S1, 0, new DescriptionFragment("Do something", Boolean.FALSE), null},
+                {S1, 0, new DescriptionFragment("Do something", Boolean.FALSE), new String[0]},
                 {S2, 0, new DescriptionFragment("key", Boolean.TRUE, Boolean.FALSE), new String[]{"key"}},
                 {S3, 0, new DescriptionFragment("Create S3 bucket named ", Boolean.FALSE), new String[]{"bucket", "key"}},
                 {S3, 1, new DescriptionFragment("bucket", Boolean.TRUE, Boolean.FALSE), new String[]{"bucket", "key"}},
@@ -49,6 +50,13 @@ public class DescriptionParserTest {
     public void testSingle() {
         List<DescriptionFragment> fragments = DescriptionParser.parseDescription(toParse);
         assertEquals(fragments.get(number), fragment);
+    }
+
+    @Test
+    public void extractParametersShouldWork() {
+        Map<String, String> parameters = DescriptionParser.extractParameters(toParse);
+        assertEquals(parameterNames.length,
+                Arrays.stream(parameterNames).filter(x -> parameters.containsKey(x)).count());
     }
 
     @Test
