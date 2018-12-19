@@ -20,7 +20,7 @@
 
 <div class="container" id="tasksContainer">
     <h2 th:inline="text">Chapter [[${chapter.title}]]</h2>
-    <form th:action="@{/chapter}" method="POST" modelAttribute="answer">
+    <form th:action="${allDone} ? ${nextChapter} : @{/chapter}" th:method="${allDone} ? 'GET' : 'POST'" modelAttribute="answer">
         <div class="d-inline">
             <input type="hidden" th:name="id" th:value="${chapter.chapterId}"/>
             <ul class="d-inline" th:each="ut : ${tasks}">
@@ -40,7 +40,7 @@
             </ul>
         </div>
         <br/>
-        <input type="submit" class="btn btn-primary" value="Next"/>
+        <input type="submit" class="btn btn-primary" th:value="${allDone} ? 'Next' : 'Check'"/>
 </div>
 </form>
 <br/>

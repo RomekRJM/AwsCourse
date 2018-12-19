@@ -26,7 +26,9 @@ import rjm.romek.awscourse.service.UserTaskService;
 public class ChapterController {
 
     public static final String PATH = "chapter";
-    public static final String NEXT = "next";
+    public static final String NEXT_CHAPTER = "nextChapter";
+    public static final String NEXT_CHAPTER_PREFIX = "/chapter/";
+    public static final String ALL_DONE = "allDone";
     public static final String CHAPTER = "chapter";
     public static final String TASKS = "tasks";
     public static final String ERROR = "error";
@@ -56,15 +58,20 @@ public class ChapterController {
         List<UserTask> tasks = (List<UserTask>)modelMap.get(TASKS);
 
         final Map<String, String> answers = removeUselessEntries(allRequestParams);
+        int done = 0;
 
         for (UserTask task : tasks) {
             try {
-                userTaskService.checkTaskAndSaveAnswer(task, answers);
+                if (userTaskService.checkTaskAndSaveAnswer(task, answers)) {
+                    ++done;
+                }
             } catch (Exception exc) {
                 addExceptionMessage(modelMap, task, exc);
             }
         }
 
+        modelMap.put(ALL_DONE, done == tasks.size());
+        modelMap.put(NEXT_CHAPTER, NEXT_CHAPTER_PREFIX + String.valueOf(id + 1));
         model.addAllAttributes(modelMap);
         return PATH;
     }

@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.amazonaws.services.ec2.AmazonEC2;
+import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
@@ -13,8 +15,12 @@ public class AwsConfiguration {
 
     @Bean
     public AmazonS3 amazonS3() {
-        return AmazonS3ClientBuilder.standard()
-                .build();
+        return AmazonS3ClientBuilder.standard().build();
+    }
+
+    @Bean
+    public AmazonEC2 amazonEC2() {
+        return AmazonEC2ClientBuilder.standard().build();
     }
 
 }

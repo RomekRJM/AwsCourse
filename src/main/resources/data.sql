@@ -20,3 +20,10 @@ VALUES (1002,
                'then move it to standard infrequent and after that to glacier - 90 days after creation.',
                '(*STANDARD_IA=30)(*GLACIER=90)'),
         'S3 Bucket', 'rjm.romek.awscourse.verifier.s3.LifecyclePolicyVerifier', 1000);
+
+INSERT INTO chapter(chapter_id, title)
+VALUES (1001, 'EC2');
+
+INSERT INTO task (task_id, description, title, verifier, chapter_chapter_id)
+VALUES (1003, 'Create an EC2 instance of type t2.micro and paste id in here: (instanceId).',
+        'EC2', 'rjm.romek.awscourse.verifier.ec2.EC2ExistsVerifier', 1001);
