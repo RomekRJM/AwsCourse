@@ -33,8 +33,6 @@ public class Task {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Chapter chapter;
 
-    private String title;
-
     private String description;
 
     private Class<? extends TaskVerifier> verifier;
@@ -49,9 +47,8 @@ public class Task {
         this.chapter = chapter;
     }
 
-    public Task(Chapter chapter, String title, String description, Class<? extends TaskVerifier> verifier) {
+    public Task(Chapter chapter, String description, Class<? extends TaskVerifier> verifier) {
         this.chapter = chapter;
-        this.title = title;
         this.description = description;
         this.verifier = verifier;
     }
@@ -70,14 +67,6 @@ public class Task {
 
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {

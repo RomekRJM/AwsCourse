@@ -29,7 +29,7 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task = new Task(chapter, "Task", "Description", KeyExistsVerifier.class);
+        Task task = new Task(chapter, "Description", KeyExistsVerifier.class);
 
         task = taskRepository.save(task);
         assertTrue(taskRepository.findById(task.getTaskId()).isPresent());
@@ -40,8 +40,8 @@ public class TaskRepositoryTest {
         Chapter chapter = new Chapter("Chapter");
         chapterRepository.save(chapter);
 
-        Task task1 = new Task(chapter, "Task1", "Description", KeyExistsVerifier.class);
-        Task task2 = new Task(chapter, "Task2", "Description", KeyExistsVerifier.class);
+        Task task1 = new Task(chapter, "Description", KeyExistsVerifier.class);
+        Task task2 = new Task(chapter, "Description", KeyExistsVerifier.class);
 
         taskRepository.save(task1);
         taskRepository.save(task2);
