@@ -13,13 +13,13 @@ public class EC2Service {
     @Autowired
     private AmazonEC2 amazonEC2;
 
-    private static final String INSTANCE_TYPE = "instanceType";
+    public static final String INSTANCE_TYPE = "instanceType";
 
-    public boolean ec2InstanceExistsAndIsOfType(String instanceId, String expectedInstanceType) {
+    public boolean ec2InstanceUpAndIsOfType(String instanceId, String instanceType) {
         DescribeInstanceAttributeRequest request = new DescribeInstanceAttributeRequest()
                 .withAttribute(INSTANCE_TYPE).withInstanceId(instanceId);
         String actualInstanceType = amazonEC2.describeInstanceAttribute(request).getInstanceAttribute().getInstanceType();
 
-        return StringUtils.equals(expectedInstanceType, actualInstanceType);
+        return StringUtils.equals(instanceType, actualInstanceType);
     }
 }
