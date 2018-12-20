@@ -55,10 +55,6 @@ public class S3Service {
         }
 
         for (BucketLifecycleConfiguration.Transition t2 : transitions) {
-            if (t1 == t2) {
-                return true;
-            }
-
             if (t1.getStorageClassAsString().equals(t2.getStorageClassAsString())
                     && t1.getDays() == t2.getDays()) {
                 return true;

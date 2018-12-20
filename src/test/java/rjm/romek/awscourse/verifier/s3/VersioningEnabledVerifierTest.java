@@ -1,6 +1,6 @@
 package rjm.romek.awscourse.verifier.s3;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -14,13 +14,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.BucketVersioningConfiguration;
 import com.google.common.collect.ImmutableMap;
 
 import rjm.romek.awscourse.model.UserTask;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class KeyExistsVerifierTest {
+public class VersioningEnabledVerifierTest {
 
     @MockBean
     private AmazonS3 amazonS3;
@@ -28,26 +29,27 @@ public class KeyExistsVerifierTest {
     @Mock
     private UserTask userTask;
 
+    @Mock
+    private BucketVersioningConfiguration bucketVersioningConfiguration;
+
     @Autowired
-    private KeyExistsVerifier keyExistsVerifier;
+    private VersioningEnabledVerifier versioningEnabledVerifier;
 
     private static final String EXISTING_BUCKET = "existing-bucket";
-    private static final String EXISTING_KEY = "existing-key";
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        when(amazonS3.getBucketVersioningConfiguration(EXISTING_BUCKET)).thenReturn(bucketVersioningConfiguration);
     }
 
     @Test
     public void isCompletedShouldReturnTrue() {
-        when(amazonS3.doesObjectExist(EXISTING_BUCKET, EXISTING_KEY)).thenReturn(true);
+        when(bucketVersioningConfiguration.getStatus()).thenReturn(BucketVersioningConfiguration.ENABLED);
         when(userTask.getAnswers())
-                .thenReturn(ImmutableMap.of(
-                        "bucketName", EXISTING_BUCKET,
-                        "keyName", EXISTING_KEY)
+                .thenReturn(ImmutableMap.of("bucketName", EXISTING_BUCKET)
                 );
 
-        assertTrue(keyExistsVerifier.isCompleted(userTask));
+        assertTrue(versioningEnabledVerifier.isCompleted(userTask));
     }
 }
