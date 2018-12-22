@@ -51,16 +51,19 @@ public class LifecyclePolicyVerifierTest {
                             .withStorageClass(StorageClass.Glacier).withDays(90)
             );
 
-    private static final List<BucketLifecycleConfiguration.Transition> EMPTY_TRANSITIONS = ImmutableList.of();
+    private static final List<BucketLifecycleConfiguration.Transition> DIFFERENT_TRANSITIONS =
+            ImmutableList.of(new BucketLifecycleConfiguration.Transition()
+                            .withStorageClass(StorageClass.OneZoneInfrequentAccess).withDays(7)
+            );
 
     private static final List<BucketLifecycleConfiguration.Rule> MATCHING =
             ImmutableList.of(new BucketLifecycleConfiguration.Rule().withTransitions(
                     MATCHING_TRANSITIONS
             ));
 
-    private static final List<BucketLifecycleConfiguration.Rule> EMPTY =
+    private static final List<BucketLifecycleConfiguration.Rule> DIFFERENT =
             ImmutableList.of(new BucketLifecycleConfiguration.Rule().withTransitions(
-                    EMPTY_TRANSITIONS
+                    DIFFERENT_TRANSITIONS
             ));
 
     @Before
@@ -78,7 +81,14 @@ public class LifecyclePolicyVerifierTest {
 
     @Test
     public void isCompletedShouldReturnFalse() {
-        when(bucketLifecycleConfiguration.getRules()).thenReturn(EMPTY);
+        when(bucketLifecycleConfiguration.getRules()).thenReturn(DIFFERENT);
+
+        assertFalse(lifecyclePolicyVerifier.isCompleted(createUserTask()));
+    }
+
+    @Test
+    public void isCompletedShouldReturnFalseOnNull() {
+        when(amazonS3.getBucketLifecycleConfiguration(EXISTING_BUCKET)).thenReturn(null);
 
         assertFalse(lifecyclePolicyVerifier.isCompleted(createUserTask()));
     }
