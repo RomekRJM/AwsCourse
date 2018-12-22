@@ -1,11 +1,11 @@
-package rjm.romek.awscourse.verifier;
+package rjm.romek.awscourse.testutils;
 
 import java.util.Map;
 
 import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.model.UserTask;
 
-public class VerifierTestUtils {
+public class TestUtils {
     public static UserTask createUserTask(String description, Map<String, String> answers) {
         Task task = new Task();
         task.setDescription(description);

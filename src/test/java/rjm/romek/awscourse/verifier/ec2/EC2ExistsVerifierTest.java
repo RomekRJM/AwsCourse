@@ -22,7 +22,7 @@ import com.amazonaws.services.ec2.model.InstanceAttribute;
 import com.google.common.collect.ImmutableMap;
 
 import rjm.romek.awscourse.model.UserTask;
-import rjm.romek.awscourse.verifier.VerifierTestUtils;
+import rjm.romek.awscourse.testutils.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -32,7 +32,7 @@ public class EC2ExistsVerifierTest {
             "(instanceId).(*instanceType=m3.medium)";
     private static final String INSTANCE_ID = "i-a123456789";
 
-    private static final UserTask USER_TASK = VerifierTestUtils.createUserTask(
+    private static final UserTask USER_TASK = TestUtils.createUserTask(
             TASK_DESCRIPTION, ImmutableMap.of("instanceId", INSTANCE_ID)
     );
 

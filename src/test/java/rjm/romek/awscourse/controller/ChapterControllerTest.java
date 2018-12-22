@@ -37,7 +37,7 @@ import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.repository.ChapterRepository;
 import rjm.romek.awscourse.repository.TaskRepository;
 import rjm.romek.awscourse.service.UserTaskService;
-import rjm.romek.awscourse.verifier.VerifierTestUtils;
+import rjm.romek.awscourse.testutils.TestUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,7 +58,7 @@ public class ChapterControllerTest {
 
     private final Chapter CHAPTER = new Chapter(1l, "Test");
     private final Map<String, String> ANSWERS = ImmutableMap.of("key", "value");
-    private final UserTask USER_TASK = VerifierTestUtils.createUserTask("test", ANSWERS);
+    private final UserTask USER_TASK = TestUtils.createUserTask("test", ANSWERS);
 
     @Before
     public void setUp() {

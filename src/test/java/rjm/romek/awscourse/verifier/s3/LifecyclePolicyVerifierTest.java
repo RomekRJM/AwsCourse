@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import rjm.romek.awscourse.model.UserTask;
-import rjm.romek.awscourse.verifier.VerifierTestUtils;
+import rjm.romek.awscourse.testutils.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -66,7 +66,7 @@ public class LifecyclePolicyVerifierTest {
                     DIFFERENT_TRANSITIONS
             ));
 
-    private static final UserTask USER_TASK = VerifierTestUtils.createUserTask(
+    private static final UserTask USER_TASK = TestUtils.createUserTask(
             TASK_DESCRIPTION, ImmutableMap.of("bucketName", EXISTING_BUCKET)
     );
 
