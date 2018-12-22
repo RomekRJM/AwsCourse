@@ -22,8 +22,8 @@ import com.amazonaws.services.s3.model.StorageClass;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import rjm.romek.awscourse.model.Task;
 import rjm.romek.awscourse.model.UserTask;
+import rjm.romek.awscourse.verifier.VerifierTestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
@@ -66,6 +66,10 @@ public class LifecyclePolicyVerifierTest {
                     DIFFERENT_TRANSITIONS
             ));
 
+    private static final UserTask USER_TASK = VerifierTestUtils.createUserTask(
+            TASK_DESCRIPTION, ImmutableMap.of("bucketName", EXISTING_BUCKET)
+    );
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -76,32 +80,20 @@ public class LifecyclePolicyVerifierTest {
     public void isCompletedShouldReturnTrue() {
         when(bucketLifecycleConfiguration.getRules()).thenReturn(MATCHING);
 
-        assertTrue(lifecyclePolicyVerifier.isCompleted(createUserTask()));
+        assertTrue(lifecyclePolicyVerifier.isCompleted(USER_TASK));
     }
 
     @Test
     public void isCompletedShouldReturnFalse() {
         when(bucketLifecycleConfiguration.getRules()).thenReturn(DIFFERENT);
 
-        assertFalse(lifecyclePolicyVerifier.isCompleted(createUserTask()));
+        assertFalse(lifecyclePolicyVerifier.isCompleted(USER_TASK));
     }
 
     @Test
     public void isCompletedShouldReturnFalseOnNull() {
         when(amazonS3.getBucketLifecycleConfiguration(EXISTING_BUCKET)).thenReturn(null);
 
-        assertFalse(lifecyclePolicyVerifier.isCompleted(createUserTask()));
-    }
-
-    private UserTask createUserTask() {
-        Task task = new Task();
-        task.setDescription(TASK_DESCRIPTION);
-        UserTask userTask = new UserTask();
-        userTask.setAnswers(ImmutableMap.of(
-                "bucketName", EXISTING_BUCKET)
-        );
-        userTask.setTask(task);
-
-        return userTask;
+        assertFalse(lifecyclePolicyVerifier.isCompleted(USER_TASK));
     }
 }
