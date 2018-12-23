@@ -33,6 +33,7 @@ public class Task {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Chapter chapter;
 
+    @Column(length=512)
     private String description;
 
     private Class<? extends TaskVerifier> verifier;
