@@ -35,13 +35,19 @@ public abstract class EC2Verifier implements TaskVerifier {
         return false;
     }
 
-    protected abstract String getEC2AttributeValue(Instance instance);
+    protected abstract Object getEC2AttributeValue(Instance instance);
 
     protected boolean done(UserTask userTask, Instance instance) {
-        return StringUtils.equals(getEC2AttributeValue(instance), getAttributeValue(userTask.getTask()));
+        Object ec2AttributeValue = getEC2AttributeValue(instance);
+
+        if (ec2AttributeValue instanceof String) {
+            return StringUtils.equals((String)ec2AttributeValue, getAttributeValue(userTask.getTask()));
+        }
+
+        return false;
     }
 
-    private String getAttributeValue(Task task) {
+    protected final String getAttributeValue(Task task) {
         return task.getDescriptionFragments()
                 .stream().filter(x -> StringUtils.equals(attributeName, x.getText()))
                 .findFirst().get().getValue();
