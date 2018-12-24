@@ -29,13 +29,17 @@ public abstract class EC2Verifier implements TaskVerifier {
         Optional<Instance> instance = ec2Service.getInstance(answers.getOrDefault(INSTANCE_ID, ""));
 
         if (instance.isPresent()) {
-            return StringUtils.equals(getEC2AttributeValue(instance.get()), getAttributeValue(userTask.getTask()));
+            return done(userTask, instance.get());
         }
 
         return false;
     }
 
     protected abstract String getEC2AttributeValue(Instance instance);
+
+    protected boolean done(UserTask userTask, Instance instance) {
+        return StringUtils.equals(getEC2AttributeValue(instance), getAttributeValue(userTask.getTask()));
+    }
 
     private String getAttributeValue(Task task) {
         return task.getDescriptionFragments()

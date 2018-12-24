@@ -23,9 +23,17 @@ VALUES (1002,
 INSERT INTO chapter(chapter_id, title) VALUES (1001, 'EC2');
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1003, 'Create an EC2 instance using type:"t2.micro", vpc:"vpc-2e32f54b | vpc-evl-ocd", subnet:"subnet-df8352a8 | rds-c-evl-ocd | eu-west-1c" and add tag:"key:app, value:awscourse". Paste instance id in here: (instanceId).(*instanceType=m3.medium)(*ami=ami-09693313102a30b2c)(*vpc=vpc-2e32f54b)(*subnet=subnet-df8352a8)(*tag=app:awscourse)',
+VALUES (1003, 'Create an EC2 instance using type:"t2.micro" and add tag:"key:app, value:awscourse". Paste instance id in here: (instanceId).(*instanceType=m3.medium)(*tag=app:awscourse)',
         'rjm.romek.awscourse.verifier.ec2.EC2TypeVerifier', 1001);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1004, 'Use Amazon Linux AMI 2018.03.0 HVM ami:"ami-e6fc5e91".(*ami=ami-e6fc5e91)(*instanceId)',
+VALUES (1004, 'Use vpc:"vpc-2e32f54b | vpc-evl-ocd".(*vpcId=vpc-2e32f54b)(*instanceId)',
+        'rjm.romek.awscourse.verifier.ec2.EC2VpcVerifier', 1001);
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1005, 'Use subnet:"subnet-d08352a7 | rds-c-evl-ocd | eu-west-1c".(*subnetId=subnet-d08352a7)(*instanceId)',
+        'rjm.romek.awscourse.verifier.ec2.EC2SubnetVerifier', 1001);
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1006, 'Use Amazon Linux AMI 2018.03.0 HVM ami:"ami-e6fc5e91".(*ami=ami-e6fc5e91)(*instanceId)',
         'rjm.romek.awscourse.verifier.ec2.EC2AmiVerifier', 1001);
