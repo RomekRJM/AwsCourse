@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +18,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.amazonaws.services.ec2.AmazonEC2;
-import com.amazonaws.services.ec2.model.DescribeInstanceAttributeRequest;
-import com.amazonaws.services.ec2.model.DescribeInstanceAttributeResult;
-import com.amazonaws.services.ec2.model.InstanceAttribute;
+import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
+import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.Reservation;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import rjm.romek.awscourse.model.UserTask;
@@ -26,7 +30,7 @@ import rjm.romek.awscourse.testutils.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class EC2ExistsVerifierTest {
+public class EC2TypeVerifierTest {
 
     private static final String TASK_DESCRIPTION = "Create an EC2 instance of type t2.micro and paste id in here: " +
             "(instanceId).(*instanceType=m3.medium)";
@@ -40,33 +44,44 @@ public class EC2ExistsVerifierTest {
     private AmazonEC2 amazonEC2;
 
     @Mock
-    private DescribeInstanceAttributeResult describeInstanceAttributeResult;
+    private DescribeInstancesResult describeInstancesResult;
 
     @Mock
-    private InstanceAttribute instanceAttribute;
+    private Instance instance;
+
+    private List<Instance> instances;
+
+    @Mock
+    private Reservation reservation;
+
+    private List<Reservation> reservations;
 
     @Autowired
-    private EC2ExistsVerifier ec2ExistsVerifier;
+    private EC2TypeVerifier ec2TypeVerifier;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        when(amazonEC2.describeInstanceAttribute(any(DescribeInstanceAttributeRequest.class)))
-                .thenReturn(describeInstanceAttributeResult);
-        when(describeInstanceAttributeResult.getInstanceAttribute()).thenReturn(instanceAttribute);
+        instances = ImmutableList.of(instance);
+        reservations = ImmutableList.of(reservation);
+
+        when(amazonEC2.describeInstances(any(DescribeInstancesRequest.class)))
+                .thenReturn(describeInstancesResult);
+        when(describeInstancesResult.getReservations()).thenReturn(reservations);
+        when(reservation.getInstances()).thenReturn(instances);
     }
 
     @Test
     public void isCompletedShouldReturnTrue() {
-        when(instanceAttribute.getInstanceType()).thenReturn("m3.medium");
+        when(instance.getInstanceType()).thenReturn("m3.medium");
 
-        assertTrue(ec2ExistsVerifier.isCompleted(USER_TASK));
+        assertTrue(ec2TypeVerifier.isCompleted(USER_TASK));
     }
 
     @Test
     public void isCompletedShouldReturnFalseOnWrongInstanceType() {
-        when(instanceAttribute.getInstanceType()).thenReturn("t2.nano");
+        when(instance.getInstanceType()).thenReturn("t2.nano");
 
-        assertFalse(ec2ExistsVerifier.isCompleted(USER_TASK));
+        assertFalse(ec2TypeVerifier.isCompleted(USER_TASK));
     }
 }
