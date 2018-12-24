@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.DescribeSecurityGroupsRequest;
+import com.amazonaws.services.ec2.model.DescribeSecurityGroupsResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.SecurityGroup;
 
 @Service
 public class EC2Service {
@@ -31,5 +34,12 @@ public class EC2Service {
         }
 
         return instances.stream().findFirst();
+    }
+
+    public List<SecurityGroup> getSecurityGroups(String... securityGroupIds) {
+        DescribeSecurityGroupsResult result = amazonEC2.describeSecurityGroups(
+                new DescribeSecurityGroupsRequest().withGroupIds(securityGroupIds));
+
+        return result.getSecurityGroups();
     }
 }

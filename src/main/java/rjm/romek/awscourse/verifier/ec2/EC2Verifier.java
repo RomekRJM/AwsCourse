@@ -14,7 +14,7 @@ import rjm.romek.awscourse.verifier.TaskVerifier;
 
 public abstract class EC2Verifier implements TaskVerifier {
 
-    private EC2Service ec2Service;
+    protected EC2Service ec2Service;
     private String attributeName;
     public static final String INSTANCE_ID = "instanceId";
 

@@ -41,3 +41,7 @@ VALUES (1006, 'Use Amazon Linux AMI 2018.03.0 HVM ami:"ami-e6fc5e91".(*ami=ami-e
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
 VALUES (1007, 'Tag it with tag:"key:app, value:awscourse".(*tags=app:awscourse)(*instanceId)',
         'rjm.romek.awscourse.verifier.ec2.EC2TagsVerifier', 1001);
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1008, 'Associate create security group, that allows any traffic on port 80 and attach it to instance.(*sg=app:awscourse)(*instanceId)',
+        'rjm.romek.awscourse.verifier.ec2.EC2SecurityGroupVerifier', 1001);
