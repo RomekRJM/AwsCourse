@@ -43,5 +43,5 @@ VALUES (1007, 'Tag it with tag:"key:app, value:awscourse".(*tags=app:awscourse)(
         'rjm.romek.awscourse.verifier.ec2.EC2TagsVerifier', 1001);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1008, 'Associate create security group, that allows any traffic on port 80 and attach it to instance.(*sg=app:awscourse)(*instanceId)',
+VALUES (1008, 'Associate create security group, that allows any traffic on port 80 and attach it to instance.(*ingress=tcp:80:80:0.0.0.0/0)(*instanceId)',
         'rjm.romek.awscourse.verifier.ec2.EC2SecurityGroupVerifier', 1001);

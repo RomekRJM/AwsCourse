@@ -16,10 +16,10 @@ import rjm.romek.awscourse.service.EC2Service;
 
 @Service
 public class EC2SecurityGroupVerifier extends EC2Verifier {
-    private static final String ATTRIBUTE_NAME = "sg";
+    private static final String ATTRIBUTE_NAME = "ingress";
     private static final String RANGE_ALL = "0.0.0.0/0";
     private static final String ANY_PROTOCOL = "-1";
-    private static final String TCP_PROTOCOL = "tcp";
+    private static final String SPLIT_CHAR = ":";
 
     @Autowired
     public EC2SecurityGroupVerifier(EC2Service ec2Service) {
@@ -33,31 +33,40 @@ public class EC2SecurityGroupVerifier extends EC2Verifier {
 
     protected boolean done(UserTask userTask, Instance instance) {
         String attributeValue = getAttributeValue(userTask.getTask());
+        String[] attributeValueSplitted = StringUtils.split(attributeValue, SPLIT_CHAR);
+        String protocol = attributeValueSplitted[0];
+        Integer fromPort = Integer.valueOf(attributeValueSplitted[1]);
+        Integer toPort = Integer.valueOf(attributeValueSplitted[2]);
+        String ip4Range = attributeValueSplitted[3];
+
         List<GroupIdentifier> ec2AttributeValue = getEC2AttributeValue(instance);
-        String [] securityGroupIds = ec2AttributeValue.stream().map(GroupIdentifier::getGroupId).toArray(String[]::new);
+        String[] securityGroupIds = ec2AttributeValue.stream().map(GroupIdentifier::getGroupId).toArray(String[]::new);
         List<SecurityGroup> securityGroups = ec2Service.getSecurityGroups(securityGroupIds);
 
-        return allowsHttpIn(securityGroups);
+        return allowsTrafficIn(securityGroups, protocol, fromPort, toPort, ip4Range);
     }
 
-    private boolean allowsHttpIn(List<SecurityGroup> securityGroups) {
-        for(SecurityGroup securityGroup : securityGroups) {
+    private boolean allowsTrafficIn(List<SecurityGroup> securityGroups,
+                                    String protocol, Integer fromPort, Integer toPort, String ip4Range) {
+        for (SecurityGroup securityGroup : securityGroups) {
             List<IpPermission> ipPermissions = securityGroup.getIpPermissions();
-            for(IpPermission ipPermission : ipPermissions) {
+            for (IpPermission ipPermission : ipPermissions) {
                 int rulesToMatch = 3;
-                if(StringUtils.equals(ipPermission.getIpProtocol(), ANY_PROTOCOL)) {
+                if (StringUtils.equals(ipPermission.getIpProtocol(), ANY_PROTOCOL)) {
                     rulesToMatch -= 2;
                 }
-                if(StringUtils.equals(ipPermission.getIpProtocol(), TCP_PROTOCOL)) {
+                if (StringUtils.equals(ipPermission.getIpProtocol(), protocol)) {
                     --rulesToMatch;
                 }
-                if(ipPermission.getFromPort() >=80 && ipPermission.getToPort() <= 80) {
+                if (ipPermission.getFromPort() >= fromPort && ipPermission.getToPort() <= toPort) {
                     --rulesToMatch;
                 }
-                if(ipPermission.getIpv4Ranges().stream().anyMatch(x -> StringUtils.equals(x.getCidrIp(), RANGE_ALL))) {
+                if (ipPermission.getIpv4Ranges().stream().anyMatch(
+                        x -> (StringUtils.equals(x.getCidrIp(), RANGE_ALL)) || StringUtils.equals(x.getCidrIp(), ip4Range))
+                ) {
                     --rulesToMatch;
                 }
-                if(rulesToMatch <= 0) {
+                if (rulesToMatch <= 0) {
                     return true;
                 }
             }
