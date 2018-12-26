@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -20,8 +21,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.DescribeSecurityGroupsRequest;
+import com.amazonaws.services.ec2.model.DescribeSecurityGroupsResult;
+import com.amazonaws.services.ec2.model.GroupIdentifier;
 import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.IpPermission;
 import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.SecurityGroup;
 import com.amazonaws.services.ec2.model.Tag;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -34,7 +40,7 @@ import rjm.romek.awscourse.testutils.TestUtils;
 public class AllEC2VerifiersTest {
 
     private static final String TASK_DESCRIPTION = "(instanceId)(*vpcId=vpc-2032f54b)(*instanceType=m3.medium)" +
-            "(*subnetId=subnet-c08152a7)(*ami=ami-e6fc5e91)(*tags=app:awscourse)";
+            "(*subnetId=subnet-c08152a7)(*ami=ami-e6fc5e91)(*tags=app:awscourse)(*ingress=tcp:80:80:10.0.0.0/8)";
     private static final String INSTANCE_ID = "i-a123456789";
 
     private static final UserTask USER_TASK = TestUtils.createUserTask(
@@ -48,6 +54,9 @@ public class AllEC2VerifiersTest {
     private DescribeInstancesResult describeInstancesResult;
 
     @Mock
+    private DescribeSecurityGroupsResult describeSecurityGroupsResult;
+
+    @Mock
     private Instance instance;
 
     private List<Instance> instances;
@@ -56,6 +65,22 @@ public class AllEC2VerifiersTest {
     private Reservation reservation;
 
     private List<Reservation> reservations;
+
+    @Mock
+    private GroupIdentifier groupIdentifier;
+
+    private List<GroupIdentifier> groupIdentifiers;
+
+    @Mock
+    private SecurityGroup securityGroup;
+
+    private List<SecurityGroup> securityGroups;
+
+    private final IpPermission matchAllPermission = TestUtils.createIpPermission("-1", 0, 65535, "0.0.0.0/0");
+    private final IpPermission matchHttpPermission = TestUtils.createIpPermission("tcp", 80, 80, "0.0.0.0/0");
+    private final IpPermission noMatchUdpPermission = TestUtils.createIpPermission("udp", 80, 80, "0.0.0.0/0");
+
+    private List<IpPermission> ipPermissions;
 
     @Autowired
     private EC2TypeVerifier ec2TypeVerifier;
@@ -72,16 +97,27 @@ public class AllEC2VerifiersTest {
     @Autowired
     private EC2VpcVerifier ec2VpcVerifier;
 
+    @Autowired
+    private EC2SecurityGroupVerifier ec2SecurityGroupVerifier;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         instances = ImmutableList.of(instance);
         reservations = ImmutableList.of(reservation);
+        groupIdentifiers = ImmutableList.of(groupIdentifier);
+        securityGroups = ImmutableList.of(securityGroup);
+        ipPermissions = new ArrayList<>();
 
         when(amazonEC2.describeInstances(any(DescribeInstancesRequest.class)))
                 .thenReturn(describeInstancesResult);
         when(describeInstancesResult.getReservations()).thenReturn(reservations);
         when(reservation.getInstances()).thenReturn(instances);
+        when(amazonEC2.describeSecurityGroups(any(DescribeSecurityGroupsRequest.class)))
+                .thenReturn(describeSecurityGroupsResult);
+        when(describeSecurityGroupsResult.getSecurityGroups()).thenReturn(securityGroups);
+        when(instance.getSecurityGroups()).thenReturn(groupIdentifiers);
+        when(securityGroup.getIpPermissions()).thenReturn(ipPermissions);
     }
 
     @Test
@@ -152,5 +188,26 @@ public class AllEC2VerifiersTest {
         when(instance.getTags()).thenReturn(ImmutableList.of(new Tag("wrong", "tag")));
 
         assertFalse(ec2TagsVerifier.isCompleted(USER_TASK));
+    }
+
+    @Test
+    public void isCompletedShouldReturnTrueOnSecurityGroupMatchHttp() {
+        ipPermissions.add(matchHttpPermission);
+
+        assertTrue(ec2SecurityGroupVerifier.isCompleted(USER_TASK));
+    }
+
+    @Test
+    public void isCompletedShouldReturnTrueOnSecurityGroupMatchAll() {
+        ipPermissions.add(matchAllPermission);
+
+        assertTrue(ec2SecurityGroupVerifier.isCompleted(USER_TASK));
+    }
+
+    @Test
+    public void isCompletedShouldReturnFalseOnSecurityGroupWrongProtocol() {
+        ipPermissions.add(noMatchUdpPermission);
+
+        assertFalse(ec2SecurityGroupVerifier.isCompleted(USER_TASK));
     }
 }

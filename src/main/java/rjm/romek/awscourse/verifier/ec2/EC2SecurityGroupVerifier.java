@@ -58,7 +58,7 @@ public class EC2SecurityGroupVerifier extends EC2Verifier {
                 if (StringUtils.equals(ipPermission.getIpProtocol(), protocol)) {
                     --rulesToMatch;
                 }
-                if (ipPermission.getFromPort() >= fromPort && ipPermission.getToPort() <= toPort) {
+                if (ipPermission.getFromPort() <= fromPort && ipPermission.getToPort() >= toPort) {
                     --rulesToMatch;
                 }
                 if (ipPermission.getIpv4Ranges().stream().anyMatch(
