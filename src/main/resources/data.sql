@@ -49,3 +49,9 @@ VALUES (1008, 'Associate create security group, that allows any traffic on port 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
 VALUES (1009, 'Read private instance ip address and put it here: (u).',
         'rjm.romek.awscourse.verifier.http.HttpVerifier', 1001);
+
+INSERT INTO chapter(chapter_id, title) VALUES (1002, 'ElasticBeanstalk');
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1010, 'Create ElasticBeanstalk environment, wait until it is green and paste environment name here: (environmentName).',
+        'rjm.romek.awscourse.verifier.elasticbeanstalk.EnvironmentHealthyVerifier', 1002);
