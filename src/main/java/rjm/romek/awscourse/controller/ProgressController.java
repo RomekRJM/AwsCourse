@@ -60,7 +60,7 @@ public class ProgressController {
         return modelMap;
     }
 
-    private class ChapterProgress {
+    public class ChapterProgress {
 
         private final String chapterTitle;
         private final String[] userNames;
