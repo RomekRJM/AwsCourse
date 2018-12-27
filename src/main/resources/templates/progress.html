@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:insert="fragments/head.html :: head">
+    <title>Progress</title>
+</head>
+
+<body>
+
+<div class="container" id="tasksContainer">
+    <div th:each="p : ${progress}">
+        <h3>[[ ${p.chapterTitle} ]]</h3>
+        <table>
+            <tr>
+                <th></th>
+                <th th:each="description : ${p.taskDescriptions}">[[ ${description} ]]</th>
+            </tr>
+            <tr th:each="i : ${#numbers.sequence( 0, p.userNames.length-1, 1)}">
+                <td>[[ ${p.userNames[i]} ]]</td>
+                <td th:each="j : ${#numbers.sequence( 0, p.taskDescriptions.length-1, 1)}">
+                    [[ ${p.taskProgress[i][j]} ]]
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

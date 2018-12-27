@@ -14,4 +14,5 @@ import rjm.romek.awscourse.model.UserTask;
 public interface UserTaskRepository extends CrudRepository<UserTask, Long> {
     public UserTask findByUserAndTask(User user, Task task);
     public List<UserTask> findAllByUserAndTask_Chapter(User user, Chapter chapter);
+    public List<UserTask> findAllByTask_Chapter(Chapter chapter);
 }
