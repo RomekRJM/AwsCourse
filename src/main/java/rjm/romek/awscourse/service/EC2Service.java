@@ -9,16 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.ec2.AmazonEC2;
+import com.amazonaws.services.ec2.model.CreateVolumeRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.DescribeSecurityGroupsRequest;
 import com.amazonaws.services.ec2.model.DescribeSecurityGroupsResult;
+import com.amazonaws.services.ec2.model.DryRunResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.SecurityGroup;
 
 @Service
 public class EC2Service {
+
+    private static final String UNAUTHORIZED = "UnauthorizedOperation";
+    private static final Integer VOLUME_SIZE = Integer.valueOf(100);
 
     private final AmazonEC2 amazonEC2;
 
@@ -47,7 +52,16 @@ public class EC2Service {
         return result.getSecurityGroups();
     }
 
-    public void runDescribeInstances() {
-        amazonEC2.describeInstances();
+    public boolean dryRunCreateVolume(String az) {
+        DryRunResult<CreateVolumeRequest> createVolumeRequestDryRunResult = amazonEC2.dryRun(
+                new CreateVolumeRequest(VOLUME_SIZE, az));
+
+        if (createVolumeRequestDryRunResult.isSuccessful()) {
+            return true;
+        } else if (UNAUTHORIZED.equals(createVolumeRequestDryRunResult.getDryRunResponse().getErrorCode())) {
+            return false;
+        }
+
+        throw createVolumeRequestDryRunResult.getDryRunResponse();
     }
 }

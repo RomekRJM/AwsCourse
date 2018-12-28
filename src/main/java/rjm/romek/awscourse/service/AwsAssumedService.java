@@ -9,7 +9,11 @@ import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 
 @Service
 public class AwsAssumedService {
-    public AmazonEC2 amazonEC2(BasicSessionCredentials credentials) {
-        return AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+
+    public AmazonEC2 amazonEC2(BasicSessionCredentials credentials, String region) {
+        return AmazonEC2ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
     }
 }

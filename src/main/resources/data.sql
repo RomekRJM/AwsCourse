@@ -59,5 +59,9 @@ VALUES (1010, 'Create ElasticBeanstalk environment, wait until it is green and p
 INSERT INTO chapter(chapter_id, title) VALUES (1003, 'IAM');
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1011, 'Create role, that can be assumed by anyone and allows ec2:DescribeInstances on * and paste role arn in here: (roleArn).',
-        'rjm.romek.awscourse.verifier.iam.DescribeInstancesVerifier', 1003);
+VALUES (1011, 'Create role, that can be assumed by anyone and allows ec2:CreateVolume on * and paste role arn in here: (roleArn).(*region=eu-west-1)',
+        'rjm.romek.awscourse.verifier.iam.CreateVolumeInRegionAllowedVerifier', 1003);
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1012, 'Disallow creating volumes in us-east-1 region.(*roleArn)(*region=us-east-1)',
+        'rjm.romek.awscourse.verifier.iam.CreateVolumeInRegionDisallowedVerifier', 1003);
