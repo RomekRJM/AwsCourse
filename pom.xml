@@ -5,7 +5,7 @@
 
 	<groupId>rjm.romek</groupId>
 	<artifactId>awscourse</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>awscourse</name>
@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<spring-boot-admin.version>2.0.4</spring-boot-admin.version>
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
+		<aws.sdk.version>1.11.415</aws.sdk.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,12 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-elasticbeanstalk</artifactId>
+			<version>${aws.sdk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-sts</artifactId>
+			<version>${aws.sdk.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

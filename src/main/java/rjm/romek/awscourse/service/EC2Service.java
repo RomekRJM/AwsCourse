@@ -20,8 +20,12 @@ import com.amazonaws.services.ec2.model.SecurityGroup;
 @Service
 public class EC2Service {
 
+    private final AmazonEC2 amazonEC2;
+
     @Autowired
-    private AmazonEC2 amazonEC2;
+    public EC2Service(AmazonEC2 amazonEC2) {
+        this.amazonEC2 = amazonEC2;
+    }
 
     public Optional<Instance> getInstance(String instanceId) {
         DescribeInstancesResult result = amazonEC2.describeInstances(
@@ -41,5 +45,9 @@ public class EC2Service {
                 new DescribeSecurityGroupsRequest().withGroupIds(securityGroupIds));
 
         return result.getSecurityGroups();
+    }
+
+    public void runDescribeInstances() {
+        amazonEC2.describeInstances();
     }
 }

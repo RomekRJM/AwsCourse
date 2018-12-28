@@ -13,8 +13,12 @@ import com.amazonaws.services.s3.model.BucketVersioningConfiguration;
 @Service
 public class S3Service {
 
+    private final AmazonS3 s3Client;
+
     @Autowired
-    private AmazonS3 s3Client;
+    public S3Service(AmazonS3 s3Client) {
+        this.s3Client = s3Client;
+    }
 
     public boolean keyExists(String bucketName, String keyName) {
         return s3Client.doesObjectExist(bucketName, keyName);

@@ -12,8 +12,12 @@ public class ElasticBeanstalkService {
 
     private static final String OK = "Ok";
 
+    private final AWSElasticBeanstalk amazonElasticBeanstalk;
+
     @Autowired
-    private AWSElasticBeanstalk amazonElasticBeanstalk;
+    public ElasticBeanstalkService(AWSElasticBeanstalk amazonElasticBeanstalk) {
+        this.amazonElasticBeanstalk = amazonElasticBeanstalk;
+    }
 
     public boolean environmentHealthy(String environmentName) {
         DescribeEnvironmentHealthResult describeEnvironmentHealthResult =

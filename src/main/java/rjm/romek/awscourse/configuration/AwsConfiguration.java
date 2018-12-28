@@ -10,6 +10,8 @@ import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalk;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalkClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
 
 @Profile("prod")
 @Configuration
@@ -28,6 +30,11 @@ public class AwsConfiguration {
     @Bean
     public AWSElasticBeanstalk amazonElasticBeanstalk() {
         return AWSElasticBeanstalkClientBuilder.standard().build();
+    }
+
+    @Bean
+    public AWSSecurityTokenService amazonSTS() {
+        return AWSSecurityTokenServiceClientBuilder.standard().build();
     }
 
 }

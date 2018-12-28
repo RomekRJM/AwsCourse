@@ -55,3 +55,9 @@ INSERT INTO chapter(chapter_id, title) VALUES (1002, 'ElasticBeanstalk');
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
 VALUES (1010, 'Create ElasticBeanstalk environment, wait until it is green and paste environment name here: (environmentName).',
         'rjm.romek.awscourse.verifier.elasticbeanstalk.EnvironmentHealthyVerifier', 1002);
+
+INSERT INTO chapter(chapter_id, title) VALUES (1003, 'IAM');
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1011, 'Create role, that can be assumed by anyone and allows ec2:DescribeInstances on * and paste role arn in here: (roleArn).',
+        'rjm.romek.awscourse.verifier.iam.DescribeInstancesVerifier', 1003);
