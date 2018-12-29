@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ import rjm.romek.awscourse.service.UserTaskService;
 
 @Controller
 public class ChapterController {
+
+    Logger logger = LoggerFactory.getLogger(ChapterController.class);
 
     public static final String PATH = "chapter";
     public static final String NEXT_CHAPTER = "nextChapter";
@@ -66,6 +70,7 @@ public class ChapterController {
                     ++done;
                 }
             } catch (Exception exc) {
+                logger.debug(exc.getMessage());
                 addExceptionMessage(modelMap, task, exc);
             }
         }
