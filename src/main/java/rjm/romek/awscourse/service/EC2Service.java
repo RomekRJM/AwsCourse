@@ -23,7 +23,6 @@ import com.amazonaws.services.ec2.model.SecurityGroup;
 public class EC2Service {
 
     private static final String UNAUTHORIZED = "UnauthorizedOperation";
-    private static final Integer VOLUME_SIZE = Integer.valueOf(100);
 
     private final AmazonEC2 amazonEC2;
 
@@ -52,9 +51,9 @@ public class EC2Service {
         return result.getSecurityGroups();
     }
 
-    public boolean dryRunCreateVolume(String az) {
+    public boolean dryRunCreateVolume(String az, Integer volumeSize) {
         DryRunResult<CreateVolumeRequest> createVolumeRequestDryRunResult = amazonEC2.dryRun(
-                new CreateVolumeRequest(VOLUME_SIZE, az));
+                new CreateVolumeRequest(volumeSize, az));
 
         if (createVolumeRequestDryRunResult.isSuccessful()) {
             return true;

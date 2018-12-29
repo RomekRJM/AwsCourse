@@ -21,12 +21,21 @@ public abstract class CreateVolumeVerifier implements TaskVerifier {
     }
 
     protected boolean checkCreateVolume(UserTask userTask) {
+        return checkCreateVolume(userTask, 8);
+    }
+
+    protected boolean checkCreateVolume(UserTask userTask, Integer volumeSize) {
+        return checkCreateVolume(userTask, volumeSize, "gp2");
+    }
+
+    protected boolean checkCreateVolume(UserTask userTask, Integer volumeSize, String type) {
         Map<String, String> answers = userTask.getAnswers();
         String roleArn = answers.getOrDefault("roleArn", "");
-        String region = userTask.getTask().getParametersFromDescription().getOrDefault("region", "");
+        Map<String, String> parameters = userTask.getTask().getParametersFromDescription();
+        String region = parameters.getOrDefault("region", "");
         EC2Service ec2Service = createEC2ServiceUsingAssumedRole(roleArn, region);
 
-        return ec2Service.dryRunCreateVolume(region + "a");
+        return ec2Service.dryRunCreateVolume(region + "a", volumeSize);
     }
 
     private EC2Service createEC2ServiceUsingAssumedRole(String roleArn, String region) {

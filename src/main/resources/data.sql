@@ -63,5 +63,13 @@ VALUES (1011, 'Create role, that can be assumed by anyone and allows ec2:CreateV
         'rjm.romek.awscourse.verifier.iam.CreateVolumeInRegionAllowedVerifier', 1003);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1012, 'Disallow creating volumes in us-east-1 region.(*roleArn)(*region=us-east-1)',
+VALUES (1012, 'Deny creating volumes in us-east-1 region.(*roleArn)(*region=us-east-1)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeInRegionDisallowedVerifier', 1003);
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1013, 'Allow creating volumes in sa-east-1 region, but only up to 100GB.(*roleArn)(*region=sa-east-1)(*maxSize=100)',
+        'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeAllowedVerifier', 1003);
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1014, 'Deny creating volumes in ap-northeast-3 region, that are of type "standard" or "st1" and larger than 500GB.(*roleArn)(*region=sa-east-1)(*maxSize=500)(deniedTypes=standard:st1)',
+        'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeAllowedVerifier', 1003);
