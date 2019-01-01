@@ -71,5 +71,5 @@ VALUES (1013, 'Allow creating volumes in sa-east-1 region, but only up to 100GB.
         'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeAllowedVerifier', 1003);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1014, 'Deny creating volumes in ap-northeast-3 region, that are of type "standard" or "st1" and larger than 500GB.(*roleArn)(*region=ap-northeast-3)(*maxSize=500)(*deniedTypes=standard,st1)',
+VALUES (1014, 'Deny creating volumes in eu-central-1 region, that are of type "standard" or "st1" and larger than 500GB.(*roleArn)(*region=eu-central-1)(*maxSize=500)(*deniedTypes=standard,st1)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeWithTypeAllowedVerifier', 1003);
