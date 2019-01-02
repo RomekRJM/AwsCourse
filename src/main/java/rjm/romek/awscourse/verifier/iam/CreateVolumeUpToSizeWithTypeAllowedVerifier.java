@@ -29,17 +29,19 @@ public class CreateVolumeUpToSizeWithTypeAllowedVerifier extends CreateVolumeVer
 
         for (VolumeType volumeType : VolumeType.values()) {
             String type = volumeType.toString();
-            if (StringUtils.contains(deniedTypes, type)) {
-                if (checkCreateVolume(userTask, disallowedSize, type)) {
-                    return false;
-                }
+            boolean deniedType = StringUtils.contains(deniedTypes, type);
+            boolean createdOnAllowedSize = checkCreateVolume(userTask, allowedSize, type);
+            boolean createdOnDisallowedSize = checkCreateVolume(userTask, disallowedSize, type);
+            boolean isCorrect;
+
+            if(deniedType) {
+                isCorrect = createdOnAllowedSize && !createdOnDisallowedSize;
             } else {
-                if (!checkCreateVolume(userTask, allowedSize, type)) {
-                    return false;
-                }
-                if (checkCreateVolume(userTask, disallowedSize, type)) {
-                    return false;
-                }
+                isCorrect = createdOnAllowedSize && createdOnDisallowedSize;
+            }
+
+            if (!isCorrect) {
+                return false;
             }
         }
 

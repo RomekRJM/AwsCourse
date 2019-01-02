@@ -35,7 +35,7 @@ public abstract class CreateVolumeVerifier implements TaskVerifier {
         String region = parameters.getOrDefault("region", "");
         EC2Service ec2Service = createEC2ServiceUsingAssumedRole(roleArn, region);
 
-        return ec2Service.dryRunCreateVolume(region + "a", volumeSize);
+        return ec2Service.dryRunCreateVolume(region + "a", volumeSize, type);
     }
 
     private EC2Service createEC2ServiceUsingAssumedRole(String roleArn, String region) {

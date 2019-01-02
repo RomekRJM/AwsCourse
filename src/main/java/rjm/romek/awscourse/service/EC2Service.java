@@ -18,6 +18,7 @@ import com.amazonaws.services.ec2.model.DryRunResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.SecurityGroup;
+import com.amazonaws.services.ec2.model.VolumeType;
 
 @Service
 public class EC2Service {
@@ -51,9 +52,10 @@ public class EC2Service {
         return result.getSecurityGroups();
     }
 
-    public boolean dryRunCreateVolume(String az, Integer volumeSize) {
+    public boolean dryRunCreateVolume(String az, Integer volumeSize, String volumeType) {
         DryRunResult<CreateVolumeRequest> createVolumeRequestDryRunResult = amazonEC2.dryRun(
-                new CreateVolumeRequest(volumeSize, az));
+                createVolumeRequest(az, volumeSize, volumeType)
+        );
 
         if (createVolumeRequestDryRunResult.isSuccessful()) {
             return true;
@@ -62,5 +64,15 @@ public class EC2Service {
         }
 
         throw createVolumeRequestDryRunResult.getDryRunResponse();
+    }
+
+    private CreateVolumeRequest createVolumeRequest(String az, Integer volumeSize, String volumeType) {
+        CreateVolumeRequest request = new CreateVolumeRequest(volumeSize, az).withVolumeType(volumeType);
+
+        if(VolumeType.fromValue(volumeType) == VolumeType.Io1) {
+            request.withIops(500);
+        }
+
+        return request;
     }
 }
