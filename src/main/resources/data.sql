@@ -35,11 +35,11 @@ VALUES (1005, 'Use subnet:"subnet-d08352a7 | rds-c-evl-ocd | eu-west-1c".(*subne
         'rjm.romek.awscourse.verifier.ec2.EC2SubnetVerifier', 1001);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1006, 'Use Amazon Linux AMI 2018.03.0 HVM ami:"ami-e6fc5e91".(*ami=ami-e6fc5e91)(*instanceId)',
+VALUES (1006, 'Use Amazon Linux AMI 2018.03.0 HVM ami "ami-e6fc5e91".(*ami=ami-e6fc5e91)(*instanceId)',
         'rjm.romek.awscourse.verifier.ec2.EC2AmiVerifier', 1001);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1007, 'Tag it with tag:"key:app, value:awscourse".(*tags=app:awscourse)(*instanceId)',
+VALUES (1007, 'Tag it with tag "key:app, value:awscourse".(*tags=app:awscourse)(*instanceId)',
         'rjm.romek.awscourse.verifier.ec2.EC2TagsVerifier', 1001);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
@@ -59,19 +59,19 @@ VALUES (1010, 'Create ElasticBeanstalk environment, wait until it is green and p
 INSERT INTO chapter(chapter_id, title) VALUES (1003, 'IAM');
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1011, 'Create role, that can be assumed by anyone and allows ec2:CreateVolume on * and paste role arn in here: (roleArn).(*region=eu-west-1)',
+VALUES (1011, 'Create role, that can be assumed by anyone and allows "ec2:CreateVolume" on "*" and paste role arn in here: (roleArn).(*region=eu-west-1)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeInRegionAllowedVerifier', 1003);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1012, 'Deny creating volumes in us-east-1 region.(*roleArn)(*region=us-east-1)',
+VALUES (1012, 'Deny creating volumes in "us-east-1" region.(*roleArn)(*region=us-east-1)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeInRegionDisallowedVerifier', 1003);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1013, 'Allow creating volumes in sa-east-1 region, but only up to 100GB.(*roleArn)(*region=sa-east-1)(*maxSize=100)',
+VALUES (1013, 'Allow creating volumes in "sa-east-1" region, but only up to 100GB.(*roleArn)(*region=sa-east-1)(*maxSize=100)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeAllowedVerifier', 1003);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1014, 'Deny creating volumes in eu-central-1 region, that are of type "standard" or "st1" and larger than 500GB.(*roleArn)(*region=eu-central-1)(*maxSize=500)(*deniedTypes=standard,st1)',
+VALUES (1014, 'Deny creating volumes in "eu-central-1" region, that are of type "standard" or "st1" and larger than 500GB.(*roleArn)(*region=eu-central-1)(*maxSize=500)(*deniedTypes=standard,st1)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeWithTypeAllowedVerifier', 1003);
 
 INSERT INTO chapter(chapter_id, title) VALUES (1004, 'RDS');
