@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalk;
+import com.amazonaws.services.rds.AmazonRDS;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 
@@ -37,5 +38,11 @@ public class MockAwsConfiguration {
     @Primary
     public AWSSecurityTokenService amazonSTS() {
         return Mockito.mock(AWSSecurityTokenService.class);
+    }
+
+    @Bean
+    @Primary
+    public AmazonRDS amazonRDS() {
+        return Mockito.mock(AmazonRDS.class);
     }
 }

@@ -8,6 +8,8 @@ import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalk;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalkClientBuilder;
+import com.amazonaws.services.rds.AmazonRDS;
+import com.amazonaws.services.rds.AmazonRDSClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
@@ -35,6 +37,11 @@ public class AwsConfiguration {
     @Bean
     public AWSSecurityTokenService amazonSTS() {
         return AWSSecurityTokenServiceClientBuilder.standard().build();
+    }
+
+    @Bean
+    public AmazonRDS amazonRDS() {
+        return AmazonRDSClientBuilder.standard().build();
     }
 
 }

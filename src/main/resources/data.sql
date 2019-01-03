@@ -23,7 +23,7 @@ VALUES (1002,
 INSERT INTO chapter(chapter_id, title) VALUES (1001, 'EC2');
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
-VALUES (1003, 'Create an EC2 instance using type:"t2.micro". Paste instance id in here: (instanceId).(*instanceType=m3.medium)',
+VALUES (1003, 'Create an EC2 instance using type "t2.micro". Paste instance id in here: (instanceId).(*instanceType=m3.medium)',
         'rjm.romek.awscourse.verifier.ec2.EC2TypeVerifier', 1001);
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
@@ -73,3 +73,9 @@ VALUES (1013, 'Allow creating volumes in sa-east-1 region, but only up to 100GB.
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
 VALUES (1014, 'Deny creating volumes in eu-central-1 region, that are of type "standard" or "st1" and larger than 500GB.(*roleArn)(*region=eu-central-1)(*maxSize=500)(*deniedTypes=standard,st1)',
         'rjm.romek.awscourse.verifier.iam.CreateVolumeUpToSizeWithTypeAllowedVerifier', 1003);
+
+INSERT INTO chapter(chapter_id, title) VALUES (1004, 'RDS');
+
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+VALUES (1015, 'Create an RDS instance using type "db.t2.micro". Paste instance name in here: (dbInstanceId).(*dbInstanceClass=db.t2.micro)',
+        'rjm.romek.awscourse.verifier.rds.RDSClassVerifier', 1004);
