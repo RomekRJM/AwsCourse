@@ -18,7 +18,7 @@ public class EC2TypeVerifier extends EC2Verifier {
     }
 
     @Override
-    protected String getEC2AttributeValue(Instance instance) {
+    protected String getInstanceAttributeValue(Instance instance) {
         return instance.getInstanceType();
     }
 }

@@ -17,7 +17,7 @@ public class EC2SubnetVerifier extends EC2Verifier {
     }
 
     @Override
-    protected String getEC2AttributeValue(Instance instance) {
+    protected String getInstanceAttributeValue(Instance instance) {
         return instance.getSubnetId();
     }
 }

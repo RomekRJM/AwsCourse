@@ -21,7 +21,7 @@ import com.amazonaws.services.ec2.model.SecurityGroup;
 import com.amazonaws.services.ec2.model.VolumeType;
 
 @Service
-public class EC2Service {
+public class EC2Service implements InstanceService<Instance> {
 
     private static final String UNAUTHORIZED = "UnauthorizedOperation";
 

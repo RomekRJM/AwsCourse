@@ -18,7 +18,7 @@ public class RDSClassVerifier extends RDSVerifier {
     }
 
     @Override
-    protected String getDBAttributeValue(DBInstance instance) {
+    protected String getInstanceAttributeValue(DBInstance instance) {
         return instance.getDBInstanceClass();
     }
 }

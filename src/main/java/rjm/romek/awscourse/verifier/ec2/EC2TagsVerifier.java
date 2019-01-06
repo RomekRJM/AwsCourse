@@ -23,12 +23,12 @@ public class EC2TagsVerifier extends EC2Verifier {
     }
 
     @Override
-    protected List<Tag> getEC2AttributeValue(Instance instance) {
+    protected List<Tag> getInstanceAttributeValue(Instance instance) {
         return instance.getTags();
     }
 
     protected boolean done(UserTask userTask, Instance instance) {
-        List<Tag> tags = getEC2AttributeValue(instance);
+        List<Tag> tags = getInstanceAttributeValue(instance);
         String attributeValue = getAttributeValue(userTask.getTask());
         String [] keyValue = StringUtils.split(attributeValue, SPLIT_CHAR);
 

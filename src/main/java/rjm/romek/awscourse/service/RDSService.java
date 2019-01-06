@@ -11,7 +11,7 @@ import com.amazonaws.services.rds.model.DescribeDBInstancesRequest;
 import com.amazonaws.services.rds.model.DescribeDBInstancesResult;
 
 @Service
-public class RDSService {
+public class RDSService implements InstanceService<DBInstance> {
 
     private final AmazonRDS amazonRDS;
 
@@ -20,7 +20,7 @@ public class RDSService {
         this.amazonRDS = amazonRDS;
     }
 
-    public Optional<DBInstance> getDBInstance(String dBInstanceIdentifier) {
+    public Optional<DBInstance> getInstance(String dBInstanceIdentifier) {
         DescribeDBInstancesResult result = amazonRDS.describeDBInstances(
                 new DescribeDBInstancesRequest().withDBInstanceIdentifier(dBInstanceIdentifier));
 

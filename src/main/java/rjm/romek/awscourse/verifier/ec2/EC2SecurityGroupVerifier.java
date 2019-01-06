@@ -27,7 +27,7 @@ public class EC2SecurityGroupVerifier extends EC2Verifier {
     }
 
     @Override
-    protected List<GroupIdentifier> getEC2AttributeValue(Instance instance) {
+    protected List<GroupIdentifier> getInstanceAttributeValue(Instance instance) {
         return instance.getSecurityGroups();
     }
 
@@ -39,9 +39,9 @@ public class EC2SecurityGroupVerifier extends EC2Verifier {
         Integer toPort = Integer.valueOf(attributeValueSplitted[2]);
         String ip4Range = attributeValueSplitted[3];
 
-        List<GroupIdentifier> ec2AttributeValue = getEC2AttributeValue(instance);
+        List<GroupIdentifier> ec2AttributeValue = getInstanceAttributeValue(instance);
         String[] securityGroupIds = ec2AttributeValue.stream().map(GroupIdentifier::getGroupId).toArray(String[]::new);
-        List<SecurityGroup> securityGroups = ec2Service.getSecurityGroups(securityGroupIds);
+        List<SecurityGroup> securityGroups = ((EC2Service)service).getSecurityGroups(securityGroupIds);
 
         return allowsTrafficIn(securityGroups, protocol, fromPort, toPort, ip4Range);
     }
