@@ -24,6 +24,7 @@ import com.amazonaws.services.ec2.model.VolumeType;
 public class EC2Service implements InstanceService<Instance> {
 
     private static final String UNAUTHORIZED = "UnauthorizedOperation";
+    public static final Integer DEFAULT_IOPS = Integer.valueOf(500);
 
     private final AmazonEC2 amazonEC2;
 
@@ -70,7 +71,7 @@ public class EC2Service implements InstanceService<Instance> {
         CreateVolumeRequest request = new CreateVolumeRequest(volumeSize, az).withVolumeType(volumeType);
 
         if(VolumeType.fromValue(volumeType) == VolumeType.Io1) {
-            request.withIops(500);
+            request.withIops(DEFAULT_IOPS);
         }
 
         return request;

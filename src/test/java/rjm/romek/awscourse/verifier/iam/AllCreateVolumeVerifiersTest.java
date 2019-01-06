@@ -37,6 +37,7 @@ import com.amazonaws.services.securitytoken.model.Credentials;
 
 import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.service.AwsAssumedService;
+import rjm.romek.awscourse.service.EC2Service;
 import rjm.romek.awscourse.testutils.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,8 +53,10 @@ public class AllCreateVolumeVerifiersTest {
     private static final CreateVolumeRequest V_101_GP2 = new CreateVolumeRequest(101, AZ).withVolumeType("gp2");
     private static final CreateVolumeRequest V_100_STANDARD = new CreateVolumeRequest(100, AZ).withVolumeType("standard");
     private static final CreateVolumeRequest V_101_STANDARD = new CreateVolumeRequest(101, AZ).withVolumeType("standard");
-    private static final CreateVolumeRequest V_100_IO1 = new CreateVolumeRequest(100, AZ).withVolumeType("io1");
-    private static final CreateVolumeRequest V_101_IO1 = new CreateVolumeRequest(101, AZ).withVolumeType("io1");
+    private static final CreateVolumeRequest V_100_IO1 = new CreateVolumeRequest(100, AZ).withVolumeType("io1")
+            .withIops(EC2Service.DEFAULT_IOPS);
+    private static final CreateVolumeRequest V_101_IO1 = new CreateVolumeRequest(101, AZ).withVolumeType("io1")
+            .withIops(EC2Service.DEFAULT_IOPS);
     private static final CreateVolumeRequest V_100_SC1 = new CreateVolumeRequest(100, AZ).withVolumeType("sc1");
     private static final CreateVolumeRequest V_101_SC1 = new CreateVolumeRequest(101, AZ).withVolumeType("sc1");
     private static final CreateVolumeRequest V_100_ST1 = new CreateVolumeRequest(100, AZ).withVolumeType("st1");
