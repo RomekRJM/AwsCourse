@@ -29,6 +29,7 @@
                     <small id="errors" class="text-danger">
                         [[${#vars.getVariable('error'+ut.task?.taskId)}]]
                     </small>
+                    <div th:replace="fragments/task.html :: details(page=${ut.task.getPage()})"/>
                 </li>
             </ul>
         </div>

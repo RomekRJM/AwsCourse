@@ -76,6 +76,6 @@ VALUES (1014, 'Deny creating volumes in "eu-central-1" region, that are of type 
 
 INSERT INTO chapter(chapter_id, title) VALUES (1004, 'RDS');
 
-INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
+INSERT INTO task (task_id, description, verifier, chapter_chapter_id, page)
 VALUES (1015, 'Create an RDS instance using type "db.t2.micro". Paste instance name in here: (dbInstanceId).(*dbInstanceClass=db.t2.micro)',
-        'rjm.romek.awscourse.verifier.rds.RDSClassVerifier', 1004);
+        'rjm.romek.awscourse.verifier.rds.RDSClassVerifier', 1004, 'rds');

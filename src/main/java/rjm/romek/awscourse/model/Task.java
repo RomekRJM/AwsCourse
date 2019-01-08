@@ -36,6 +36,8 @@ public class Task {
     @Column(length=512)
     private String description;
 
+    private String page;
+
     private Class<? extends TaskVerifier> verifier;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -88,6 +90,14 @@ public class Task {
 
     public List<DescriptionFragment> getDescriptionFragments() {
         return DescriptionParser.parseDescription(description);
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 
     public Chapter getChapter() {

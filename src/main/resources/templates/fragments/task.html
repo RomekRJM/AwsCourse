@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="details(page)">
+        <th:block th:switch="${page}">
+            <div th:case="'rds'"><div th:replace="fragments/rds.html :: rds"/></div>
+            <div th:case="*"/>
+        </th:block>
+    </div>
+</html>
