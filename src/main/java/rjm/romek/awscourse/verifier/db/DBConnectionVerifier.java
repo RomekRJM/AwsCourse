@@ -1,4 +1,4 @@
-package rjm.romek.awscourse.verifier.mysql;
+package rjm.romek.awscourse.verifier.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,15 +7,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Service
-public class MysqlConnectionVerifier implements TaskVerifier {
+public class DBConnectionVerifier implements TaskVerifier {
 
-    private static final String SQL = "SELECT VERSION()";
+    private static final String SQL = "SELECT 'I am in.'";
+
+    @Value("${dbUrlFormat}")
+    private String urlFormat;
 
     @Override
     public Boolean isCompleted(UserTask userTask) {
@@ -24,7 +28,7 @@ public class MysqlConnectionVerifier implements TaskVerifier {
         String password = answers.getOrDefault("password", "");
         String endpoint = answers.getOrDefault("endpoint", "");
         String database = answers.getOrDefault("database", "");
-        String url = String.format("jdbc:mysql://%s:3306/%s", endpoint, database);
+        String url = String.format(urlFormat, endpoint, database);
 
         Boolean queryExecuted = Boolean.FALSE;
 

@@ -82,4 +82,4 @@ VALUES (1015, 'Create an RDS instance using type "db.t2.micro". Paste instance n
 
 INSERT INTO task (task_id, description, verifier, chapter_chapter_id)
 VALUES (1016, 'When db launches, make sure it is reachable from outside world by adjusting security group and provide endpoint: (endpoint), database: (database), user: (user), password: (password)',
-        'rjm.romek.awscourse.verifier.mysql.MysqlConnectionVerifier', 1004);
+        'rjm.romek.awscourse.verifier.db.DBConnectionVerifier', 1004);
