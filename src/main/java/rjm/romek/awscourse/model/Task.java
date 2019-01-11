@@ -80,10 +80,6 @@ public class Task {
         this.description = description;
     }
 
-    public String[] getParameterNamesFromDescription() {
-        return DescriptionParser.extractParameterNames(description);
-    }
-
     public Map<String, String> getParametersFromDescription() {
         return DescriptionParser.extractParameters(description);
     }

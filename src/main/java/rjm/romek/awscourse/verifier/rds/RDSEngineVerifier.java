@@ -8,17 +8,17 @@ import com.amazonaws.services.rds.model.DBInstance;
 import rjm.romek.awscourse.service.RDSService;
 
 @Service
-public class RDSClassVerifier extends RDSVerifier {
+public class RDSEngineVerifier extends RDSVerifier {
 
-    private static final String ATTRIBUTE_NAME = "dbInstanceClass";
+    private static final String ATTRIBUTE_NAME = "engine";
 
     @Autowired
-    public RDSClassVerifier(RDSService rdsService) {
+    public RDSEngineVerifier(RDSService rdsService) {
         super(rdsService, ATTRIBUTE_NAME);
     }
 
     @Override
     protected String getInstanceAttributeValue(DBInstance instance) {
-        return instance.getDBInstanceClass();
+        return instance.getEngine();
     }
 }

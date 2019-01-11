@@ -45,9 +45,9 @@ public class DescriptionFragment {
 
         DescriptionFragment that = (DescriptionFragment) o;
 
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
-        if (input != null ? !input.equals(that.input) : that.input != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
-        return visible != null ? visible.equals(that.visible) : that.visible == null;
+        if (text != null ? !text.equals(that.getText()) : that.getText() != null) return false;
+        if (input != null ? !input.equals(that.getInput()) : that.getInput() != null) return false;
+        if (value != null ? !value.equals(that.getValue()) : that.getValue() != null) return false;
+        return visible != null ? visible.equals(that.isVisible()) : that.isVisible() == null;
     }
 }

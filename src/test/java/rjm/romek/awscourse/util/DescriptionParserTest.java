@@ -1,6 +1,5 @@
 package rjm.romek.awscourse.util;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -57,11 +56,5 @@ public class DescriptionParserTest {
         Map<String, String> parameters = DescriptionParser.extractParameters(toParse);
         assertEquals(parameterNames.length,
                 Arrays.stream(parameterNames).filter(x -> parameters.containsKey(x)).count());
-    }
-
-    @Test
-    public void extractParameterNamesShouldWork() {
-        String[] actual = DescriptionParser.extractParameterNames(toParse);
-        assertArrayEquals(parameterNames, actual);
     }
 }

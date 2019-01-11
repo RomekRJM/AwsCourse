@@ -5,8 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class DescriptionParser {
 
     private static final char CBEGIN = '(';
@@ -76,31 +74,4 @@ public class DescriptionParser {
         return parameters;
     }
 
-    public static String[] extractParameterNames(String s) {
-        String[] parameters = StringUtils.substringsBetween(s, BEGIN, END);
-
-        if (parameters == null) {
-            return new String[0];
-        }
-
-        String[] parameterNames = new String[parameters.length];
-        int cntr = 0;
-
-        for (String parameter : parameters) {
-            String parameterName = parameter;
-
-            if (parameter.contains(VALUE)) {
-                parameterName = parameterName.split(VALUE)[0];
-            }
-
-            if (parameterName.startsWith(INVISIBLE)) {
-                parameterName = StringUtils.remove(parameterName, INVISIBLE);
-            }
-
-            parameterNames[cntr] = parameterName;
-            ++cntr;
-        }
-
-        return parameterNames;
-    }
 }

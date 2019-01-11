@@ -56,7 +56,7 @@ public class UserTask {
         return user;
     }
 
-    public void setUser(User book) {
+    public void setUser(User user) {
         this.user = user;
     }
 
