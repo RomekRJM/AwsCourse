@@ -22,6 +22,8 @@ import rjm.romek.awscourse.model.User;
 import rjm.romek.awscourse.model.UserPrincipal;
 import rjm.romek.awscourse.model.UserTask;
 import rjm.romek.awscourse.repository.ChapterRepository;
+import rjm.romek.awscourse.service.AsyncTaskCheckService;
+import rjm.romek.awscourse.service.AsyncTaskCheckService.TaskCheckResult;
 import rjm.romek.awscourse.service.UserTaskService;
 
 @Controller
@@ -47,6 +49,9 @@ public class ChapterController {
 
     @Autowired
     private UserTaskService userTaskService;
+
+    @Autowired
+    private AsyncTaskCheckService asyncTaskCheckService;
 
     @GetMapping("/congrats")
     public ModelAndView showCongrats() {
@@ -76,24 +81,12 @@ public class ChapterController {
         Optional<Chapter> chapter = chapterRepository.findById(chapterId);
         Map<String, Object> modelMap = prepareModelMap(user, chapter.get());
         List<UserTask> tasks = (List<UserTask>) modelMap.get(TASKS);
+        Map<String, String> answers = removeUselessEntries(allRequestParams);
 
-        final Map<String, String> answers = removeUselessEntries(allRequestParams);
-        int done = 0;
+        TaskCheckResult result = asyncTaskCheckService.checkTasks(user, tasks, answers);
+        addExceptionMessages(modelMap, result);
 
-        for (UserTask task : tasks) {
-            try {
-                if (userTaskService.checkTaskAndSaveAnswer(task, answers)) {
-                    ++done;
-                }
-            } catch (Exception exc) {
-                logger.debug(String.format("%s encountered error on %s",
-                        user.getUsername(), task.getTask().getDescription()),
-                        exc.getMessage());
-                addExceptionMessage(modelMap, task, exc);
-            }
-        }
-
-        Boolean allTasksDone = done == tasks.size();
+        Boolean allTasksDone = result.getNumberOfDone() == tasks.size();
         Long nextChapterId = chapterId + 1;
         prepareForNextChapter(modelMap, allTasksDone, nextChapterId);
         model.addAllAttributes(modelMap);
@@ -125,8 +118,11 @@ public class ChapterController {
         return map;
     }
 
-    private void addExceptionMessage(Map<String, Object> modelMap, UserTask task, Exception exception) {
-        modelMap.put(ERROR + task.getTask().getTaskId(), exception.getMessage());
+    private void addExceptionMessages(Map<String, Object> modelMap, TaskCheckResult result) {
+        for(UserTask task : result.getExceptions().keySet()) {
+            Throwable exception = result.getExceptions().get(task);
+            modelMap.put(ERROR + task.getTask().getTaskId(), exception.getMessage());
+        }
     }
 
     private boolean shouldGoToCongrats(Boolean done, Long nextChapterId) {

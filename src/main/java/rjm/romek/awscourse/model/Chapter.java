@@ -6,9 +6,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Chapter {
 
     @Id
@@ -16,9 +18,6 @@ public class Chapter {
     private Long chapterId;
 
     private String title;
-
-    public Chapter() {
-    }
 
     public Chapter(String title) {
         this.title = title;

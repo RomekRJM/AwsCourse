@@ -1,4 +1,4 @@
-package rjm.romek.awscourse;
+package rjm.romek.awscourse.configuration;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -25,9 +25,9 @@ import rjm.romek.awscourse.service.CourseUserDetailsService;
 @Configuration
 @EnableWebSecurity
 @Profile("prod")
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+    Logger logger = LoggerFactory.getLogger(WebSecurityConfiguration.class);
 
     @Autowired
     private WebApplicationContext applicationContext;
