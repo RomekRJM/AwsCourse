@@ -30,6 +30,8 @@ public class ChapterController {
     Logger logger = LoggerFactory.getLogger(ChapterController.class);
 
     public static final String PATH = "chapter";
+    public static final String PATH404 = "/error/404.html";
+    public static final String REDIRECT404 = "redirect:" + PATH404;
     public static final String NEXT_CHAPTER = "nextChapter";
     public static final String NEXT_CHAPTER_PREFIX = "/chapter/";
     public static final String ALL_DONE = "allDone";
@@ -49,16 +51,24 @@ public class ChapterController {
     public ModelAndView showForm(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                  @PathVariable Optional<Long> id) {
         Long chapterId = id.orElse(1000l);
-        return new ModelAndView(PATH, prepareModelMap(userPrincipal.getUser(), chapterId));
+        Optional<Chapter> chapter = chapterRepository.findById(chapterId);
+
+        if (chapter.isPresent()) {
+            return new ModelAndView(PATH, prepareModelMap(userPrincipal.getUser(),chapter.get()));
+        } else {
+            return new ModelAndView(REDIRECT404);
+        }
     }
 
     @PostMapping({"/", "/chapter"})
     public String chapter(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                          @RequestParam(value="id", required=true) Long id,
+                          @RequestParam(value="id", required=true) Long chapterId,
                           @RequestParam Map<String,String> allRequestParams,
                           Model model) {
 
-        Map<String, Object> modelMap = prepareModelMap(userPrincipal.getUser(), id);
+        User user = userPrincipal.getUser();
+        Optional<Chapter> chapter = chapterRepository.findById(chapterId);
+        Map<String, Object> modelMap = prepareModelMap(user, chapter.get());
         List<UserTask> tasks = (List<UserTask>)modelMap.get(TASKS);
 
         final Map<String, String> answers = removeUselessEntries(allRequestParams);
@@ -70,21 +80,21 @@ public class ChapterController {
                     ++done;
                 }
             } catch (Exception exc) {
-                logger.debug(exc.getMessage());
+                logger.debug(String.format("%s encountered error on %s",
+                        user.getUsername(), task.getTask().getDescription()),
+                        exc.getMessage());
                 addExceptionMessage(modelMap, task, exc);
             }
         }
 
         modelMap.put(ALL_DONE, done == tasks.size());
-        modelMap.put(NEXT_CHAPTER, NEXT_CHAPTER_PREFIX + String.valueOf(id + 1));
+        modelMap.put(NEXT_CHAPTER, NEXT_CHAPTER_PREFIX + String.valueOf(chapterId + 1));
         model.addAllAttributes(modelMap);
         return PATH;
     }
 
-    private Map<String, Object> prepareModelMap(User user, Long chapterId) {
+    private Map<String, Object> prepareModelMap(User user, Chapter chapter) {
         Map<String, Object> modelMap = new ModelMap();
-
-        Chapter chapter = chapterRepository.findById(chapterId).get();
         List<UserTask> tasks = userTaskService.getOrCreate(user, chapter);
 
         modelMap.put(CHAPTER, chapter);

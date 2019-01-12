@@ -2,7 +2,6 @@ package rjm.romek.awscourse.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -10,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collections;
@@ -56,13 +56,13 @@ public class ChapterControllerTest {
     @MockBean
     private UserTaskService userTaskService;
 
-    private final Chapter CHAPTER = new Chapter(1l, "Test");
+    private final Chapter CHAPTER = new Chapter(1000l, "Test");
     private final Map<String, String> ANSWERS = ImmutableMap.of("key", "value");
     private final UserTask USER_TASK = TestUtils.createUserTask("test", ANSWERS);
 
     @Before
     public void setUp() {
-        when(chapterRepository.findById(anyLong())).thenReturn(Optional.of(CHAPTER));
+        when(chapterRepository.findById(eq(CHAPTER.getChapterId()))).thenReturn(Optional.of(CHAPTER));
         when(taskRepository.findByChapter(CHAPTER)).thenReturn(Collections.emptyList());
         when(userTaskService.getOrCreate(any(User.class), any(Chapter.class)))
                 .thenReturn(
@@ -80,6 +80,15 @@ public class ChapterControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString("Chapter Test")));
+    }
+
+    @Test
+    @WithUserDetails("tester")
+    public void shouldRedirectTo404() throws Exception {
+        mockMvc.perform(get("/" + ChapterController.PATH + "/567255317"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(ChapterController.PATH404))
+                .andDo(print());
     }
 
     @Test
