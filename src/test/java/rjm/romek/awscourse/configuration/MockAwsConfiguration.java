@@ -1,4 +1,4 @@
-package rjm.romek.awscourse;
+package rjm.romek.awscourse.configuration;
 
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
