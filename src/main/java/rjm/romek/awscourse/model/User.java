@@ -13,14 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class User {
-
-    public User() {
-
-    }
 
     public User(String username) {
         this.username = username;
@@ -42,5 +41,6 @@ public class User {
     private Set<String> roles;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private Set<UserTask> userTasks = new HashSet<UserTask>();
 }

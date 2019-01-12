@@ -12,21 +12,26 @@ import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import rjm.romek.awscourse.util.StringMapper;
 
 @Entity
 @IdClass(UserTaskPK.class)
 @Data
+@NoArgsConstructor
 public class UserTask {
 
     @Id
     @ManyToOne
     @JoinColumn(referencedColumnName = "user_id")
+    @EqualsAndHashCode.Exclude
     private User user;
 
     @Id
     @ManyToOne
     @JoinColumn(referencedColumnName = "task_id")
+    @EqualsAndHashCode.Exclude
     private Task task;
 
     @Column(nullable = false)
@@ -36,9 +41,6 @@ public class UserTask {
 
     @Transient
     private Map<String, String> answers;
-
-    public UserTask() {
-    }
 
     public UserTask(User user, Task task) {
         this.user = user;

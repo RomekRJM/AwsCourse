@@ -18,12 +18,15 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import rjm.romek.awscourse.util.DescriptionFragment;
 import rjm.romek.awscourse.util.DescriptionParser;
 import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Task {
 
     @Id
@@ -43,10 +46,8 @@ public class Task {
     private Class<? extends TaskVerifier> verifier;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private Set<UserTask> userTasks = new HashSet<UserTask>();
-
-    public Task() {
-    }
 
     public Task(Chapter chapter) {
         this.chapter = chapter;
