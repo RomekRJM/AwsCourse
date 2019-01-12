@@ -87,7 +87,7 @@ public class ChapterControllerTest {
     public void shouldRedirectTo404() throws Exception {
         mockMvc.perform(get("/" + ChapterController.PATH + "/567255317"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(ChapterController.PATH404))
+                .andExpect(redirectedUrl(ChapterController.PATH_404))
                 .andDo(print());
     }
 
@@ -121,6 +121,14 @@ public class ChapterControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString(exceptionMessage)));
+    }
+
+    @Test
+    @WithUserDetails("tester")
+    public void shouldGetCongrats() throws Exception {
+        mockMvc.perform(get("/" + ChapterController.PATH_CONGRATS))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
 }
