@@ -11,19 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
+import lombok.Data;
 import rjm.romek.awscourse.util.StringMapper;
 
 @Entity
 @IdClass(UserTaskPK.class)
+@Data
 public class UserTask {
-
-    public UserTask() {
-    }
-
-    public UserTask(User user, Task task) {
-        this.user = user;
-        this.task = task;
-    }
 
     @Id
     @ManyToOne
@@ -43,6 +37,14 @@ public class UserTask {
     @Transient
     private Map<String, String> answers;
 
+    public UserTask() {
+    }
+
+    public UserTask(User user, Task task) {
+        this.user = user;
+        this.task = task;
+    }
+
     @PrePersist
     public void prePersist() {
         if(done == null)
@@ -52,38 +54,6 @@ public class UserTask {
             answer = "";
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public Boolean getDone() {
-        return done;
-    }
-
-    public void setDone(Boolean done) {
-        this.done = done;
-    }
-
-    private String getAnswer() {
-        return answer;
-    }
-
-    private void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
     public Map<String, String> getAnswers() {
         answers = StringMapper.toMap(this.answer);
         return answers;
@@ -91,6 +61,6 @@ public class UserTask {
 
     public void setAnswers(Map<String, String> answers) {
         this.answers = answers;
-        setAnswer(StringMapper.toString(this.answers));
+        this.answer = StringMapper.toString(this.answers);
     }
 }

@@ -17,11 +17,13 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Data;
 import rjm.romek.awscourse.util.DescriptionFragment;
 import rjm.romek.awscourse.util.DescriptionParser;
 import rjm.romek.awscourse.verifier.TaskVerifier;
 
 @Entity
+@Data
 public class Task {
 
     @Id
@@ -56,59 +58,11 @@ public class Task {
         this.verifier = verifier;
     }
 
-    public Class<? extends TaskVerifier> getVerifier() {
-        return verifier;
-    }
-
-    public void setVerifier(Class<? extends TaskVerifier> verifier) {
-        this.verifier = verifier;
-    }
-
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Map<String, String> getParametersFromDescription() {
         return DescriptionParser.extractParameters(description);
     }
 
     public List<DescriptionFragment> getDescriptionFragments() {
         return DescriptionParser.parseDescription(description);
-    }
-
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
-    }
-
-    public Chapter getChapter() {
-        return chapter;
-    }
-
-    public void setChapter(Chapter chapter) {
-        this.chapter = chapter;
-    }
-
-    public Set<UserTask> getUserTasks() {
-        return userTasks;
-    }
-
-    public void setUserTasks(Set<UserTask> userTasks) {
-        this.userTasks = userTasks;
     }
 }
