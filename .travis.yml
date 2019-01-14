@@ -1,7 +1,9 @@
 language: java
 
-jdk:
-  - oraclejdk11
+jdk: oraclejdk11
+
+env:
+  - AWS_REGION=eu-west-1
 
 script:
   - mvn install
