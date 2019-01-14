@@ -10,10 +10,8 @@ public class DescriptionParser {
     private static final char CBEGIN = '(';
     private static final char CEND = ')';
     private static final char CINVISIBLE = '*';
-    private static final String BEGIN = "(";
     private static final String END = ")";
     private static final String VALUE = "=";
-    private static final String INVISIBLE = "*";
 
     public static List<DescriptionFragment> parseDescription(final String description) {
         StringBuilder sb = new StringBuilder();

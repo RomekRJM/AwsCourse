@@ -1,7 +1,11 @@
 INSERT INTO user(user_id, username, password, enabled)
-VALUES (1000, 'tester', '$2a$12$RIHZWG9xp6GcM.iIOEPV..9/vPcQs6kqDKnMHjy6lFMqMDbCxOAqC', true);
+VALUES (1000, 'tester', '$2a$12$wf/O3CgFDESYoe2qCdlfl.7FPHTizh7KZtxS/WKnVkAOmjAldW2g2', true);
+
 INSERT INTO user(user_id, username, password, enabled)
-VALUES (1001, 'pusiak', '$2a$12$RIHZWG9xp6GcM.iIOEPV..9/vPcQs6kqDKnMHjy6lFMqMDbCxOAqC', true);
+VALUES (1001, 'pusiak', '$2a$12$xsl4I6SlpqmvN5ELBR4k1OiS8JfH554Py4wu.aeCV5WKl158S9nXm', true);
+
+INSERT INTO user(user_id, username, password, enabled)
+VALUES (1002, 'rjm', '$2a$12$iCbfLL0VwgLvfxLcmfXsOOJdPLskmcu/9P0wgF4RUUOKs0y2J28eK', true);
 
 INSERT INTO chapter(chapter_id, title) VALUES (1000, 'S3');
 
