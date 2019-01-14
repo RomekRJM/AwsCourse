@@ -5,17 +5,17 @@
 
     <groupId>rjm.romek</groupId>
     <artifactId>awscourse</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <name>awscourse</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Used to teach people AWS basics.</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <properties>
@@ -25,6 +25,8 @@
         <spring-boot-admin.version>2.0.4</spring-boot-admin.version>
         <spring-cloud.version>Finchley.SR2</spring-cloud.version>
         <aws.sdk.version>1.11.415</aws.sdk.version>
+        <nexus.username/>
+        <nexus.password/>
     </properties>
 
     <dependencies>
@@ -39,6 +41,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.codecentric</groupId>
@@ -125,6 +132,18 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.15</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ivy</groupId>
+            <artifactId>ivy</artifactId>
+            <version>2.4.0</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -147,10 +166,17 @@
     </dependencyManagement>
 
     <build>
+        <finalName>awscourse</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -205,7 +231,7 @@
                                     </excludes>
                                     <limits>
                                         <limit>
-                                            <counter>INSTRUCTION</counter>
+                                            <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
                                             <minimum>70%</minimum>
                                         </limit>
@@ -238,6 +264,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

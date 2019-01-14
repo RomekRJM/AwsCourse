@@ -15,7 +15,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
 
-@Profile("prod")
+@Profile({"prod", "dev"})
 @Configuration
 public class AwsConfiguration {
 

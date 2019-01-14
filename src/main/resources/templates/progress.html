@@ -10,19 +10,24 @@
 
 <div class="container" id="tasksContainer">
     <div th:each="p : ${progress}">
-        <h3>[[ ${p.chapterTitle} ]]</h3>
-        <table>
+        <table class="table table-striped">
+            <thead class="thead-dark">
             <tr>
-                <th></th>
-                <th th:each="description : ${p.taskDescriptions}">[[ ${description} ]]</th>
+                <th scope="col" style="font-size: large;"><b>[[ ${p.chapterTitle} ]]</b></th>
+                <th th:each="description : ${p.taskDescriptions}" scope="col">[[ ${description} ]]</th>
             </tr>
+            </thead>
+            <tbody>
             <tr th:each="i : ${#numbers.sequence( 0, p.userNames.length-1, 1)}">
-                <td>[[ ${p.userNames[i]} ]]</td>
+                <th scope="row">[[ ${p.userNames[i]} ]]</th>
                 <td th:each="j : ${#numbers.sequence( 0, p.taskDescriptions.length-1, 1)}">
-                    [[ ${p.taskProgress[i][j]} ]]
+                    <img src="image/done.png" th:if="${p.taskProgress[i][j]}">
                 </td>
             </tr>
+            </tbody>
         </table>
+        <br/>
+        <br/>
     </div>
 </div>
 

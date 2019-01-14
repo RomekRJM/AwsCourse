@@ -27,10 +27,10 @@
                 <a href="/chapter/1002">ElasticBeanstalk</a>
             </li>
             <li>
-                <a href="/chapter/1003">IAM</a>
+                <a href="/chapter/1003">RDS</a>
             </li>
             <li>
-                <a href="/chapter/1004">RDS</a>
+                <a href="/chapter/1004">IAM</a>
             </li>
         </ul>
     </div>
@@ -46,12 +46,22 @@
                 <ul class="d-inline .col-12" th:each="ut : ${tasks}">
                     <li>
                         <div class="d-inline" th:each="df : ${ut.task?.getDescriptionFragments()}">
-                            <input class="d-inline" th:if="${df.input && df.visible}" type="text" id="${df.text}"
-                                   th:name="${df.text}"
-                                   th:value="${ut.answers.get(df.text)}"/>
-                            <div class="d-inline" th:unless="${df.input}">[[${df.text}]]</div>
+                            <div class="d-inline" th:if="${df.class.name == 'rjm.romek.awscourse.util.InputFragment'}">
+                                <input class="d-inline"
+                                       th:type="${df.typeName}"
+                                       th:id="${df.text}"
+                                       th:name="${df.text}"
+                                       th:value="${ut.answers.get(df.text)}"/>
+                            </div>
+                            <div class="d-inline"
+                                 th:unless="${df.class.name == 'rjm.romek.awscourse.util.InputFragment'}">
+                                <div class="d-inline" th:block th:switch="${df.typeName}">
+                                    <code class="d-inline" style="color: black" th:case="'code'">[[${df.text}]]</code>
+                                    <div class="d-inline" th:case="'text'">[[${df.text}]]</div>
+                                </div>
+                            </div>
                         </div>
-                        [[${ut.done} ? 'DONE' : 'NOT DONE']]
+                        <img src="image/done.png" th:if="${ut.done}">
                         <br/>
                         <small id="errors" class="text-danger">
                             [[${#vars.getVariable('error'+ut.task?.taskId)}]]

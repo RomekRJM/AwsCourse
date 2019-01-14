@@ -24,7 +24,7 @@ import rjm.romek.awscourse.service.CourseUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-@Profile("prod")
+@Profile({"prod", "dev"})
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     Logger logger = LoggerFactory.getLogger(WebSecurityConfiguration.class);
@@ -64,7 +64,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/webjars/**", "/actuator/health").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -74,7 +74,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .sessionManagement()
+                .invalidSessionUrl("/login")
+                .maximumSessions(2)
+                .expiredUrl("/login");
     }
 
     @Bean

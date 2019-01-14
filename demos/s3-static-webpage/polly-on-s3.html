@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo application from S3</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.395.0/aws-sdk.min.js"></script>
+</head>
+
+<body onload="reloadVoices()">
+<div class="container">
+    <h1>Amazon Polly demo</h1>
+    <br/>
+    <div class="form-group">
+        <label for="textEntry">Comment:</label>
+        <textarea class="form-control" rows="5" id="textEntry"></textarea>
+        <br/>
+        <label for="choose-lang">Choose language:</label>
+        <select class="form-control" id="choose-lang">
+        </select>
+        <br/>
+        <audio id="audioPlayback" controls>
+            <source id="audioSource" type="audio/mp3" src="">
+            <p id="result">result</p>
+        </audio>
+        <br/>
+        <br/>
+        <button type="button" class="btn btn-primary btn-lg" id="play" onclick="synthesize()">Synthesize</button>
+    </div>
+    <script type="text/javascript">
+        // Initialize the Amazon Cognito credentials provider
+        AWS.config.region = 'REGION'; // Region
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: 'REGION:IDENTITY_POOL',
+        });
+
+        function reloadVoices() {
+            var polly = new AWS.Polly({apiVersion: '2016-06-10'});
+            polly.describeVoices({}, function(err, data) {
+                if (err) document.getElementById('result').innerHTML = error;
+                else {
+                    data["Voices"].forEach(function (element) {
+                        var langSelect = document.getElementById("choose-lang");
+                        var option = document.createElement("option");
+                        option.text = element["Id"] + " ( " + element["Gender"] + " " + element["LanguageName"] + " )";
+                        option.value = element["Id"];
+                        langSelect.add(option)
+                    });
+                }
+            });
+        }
+
+        function synthesize() {
+            var speechParams = {
+                OutputFormat: "mp3",
+                SampleRate: "16000",
+                Text: document.getElementById("textEntry").value,
+                TextType: "text",
+                VoiceId: document.getElementById("choose-lang").value
+            };
+
+            // Create the Polly service object and presigner object
+            var polly = new AWS.Polly({apiVersion: '2016-06-10'});
+            var signer = new AWS.Polly.Presigner(speechParams, polly);
+
+            // Create presigned URL of synthesized speech file
+            signer.getSynthesizeSpeechUrl(speechParams, function (error, url) {
+                if (error) {
+                    document.getElementById('result').innerHTML = error;
+                } else {
+                    document.getElementById('audioSource').src = url;
+                    document.getElementById('audioPlayback').load();
+                    document.getElementById('result').innerHTML = "Speech ready to play.";
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+
+</html>

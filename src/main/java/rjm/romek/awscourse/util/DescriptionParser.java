@@ -10,29 +10,41 @@ public class DescriptionParser {
     private static final char CBEGIN = '(';
     private static final char CEND = ')';
     private static final char CINVISIBLE = '*';
+    private static final char CSECRET = '!';
+    private static final char CCODEBEGIN = '{';
+    private static final char CCODEEND = '}';
     private static final String END = ")";
-    private static final String VALUE = "=";
+
+    private static final DescriptionFragmentFactory factory = new DescriptionFragmentFactory();
 
     public static List<DescriptionFragment> parseDescription(final String description) {
         StringBuilder sb = new StringBuilder();
         boolean inParamName = false;
-        boolean visible = true;
         boolean append;
         List<DescriptionFragment> fragments = new ArrayList<>();
+        DescriptionFragmentType type = TextFragment.TextType.TEXT;
 
         for (char c : description.toCharArray()) {
             append = false;
 
             if (c == CBEGIN) {
-                addIfNotEmptyAndClearStringBuilder(fragments, sb, Boolean.FALSE, Boolean.TRUE);
+                addIfNotEmptyAndClearStringBuilder(fragments, sb, type);
+                type = InputFragment.InputType.TEXT;
                 inParamName = true;
-                visible = true;
             } else if (c == CEND) {
-                addIfNotEmptyAndClearStringBuilder(fragments, sb, Boolean.TRUE, visible);
+                addIfNotEmptyAndClearStringBuilder(fragments, sb, type);
+                type = TextFragment.TextType.TEXT;
                 inParamName = false;
-                visible = true;
+            } else if (c == CCODEBEGIN) {
+                addIfNotEmptyAndClearStringBuilder(fragments, sb, type);
+                type = TextFragment.TextType.CODE;
+            } else if (c == CCODEEND) {
+                addIfNotEmptyAndClearStringBuilder(fragments, sb, type);
+                type = TextFragment.TextType.TEXT;
             } else if (c == CINVISIBLE && inParamName) {
-                visible = false;
+                type = InputFragment.InputType.HIDDEN;
+            } else if (c == CSECRET && inParamName) {
+                type = InputFragment.InputType.PASSWORD;
             } else {
                 append = true;
             }
@@ -42,23 +54,17 @@ public class DescriptionParser {
             }
         }
 
-        addIfNotEmptyAndClearStringBuilder(fragments, sb, sb.toString().endsWith(END), visible);
+        type = sb.toString().endsWith(END) ? type : TextFragment.TextType.TEXT;
+        addIfNotEmptyAndClearStringBuilder(fragments, sb, type);
 
         return fragments;
     }
 
-    private static void addIfNotEmptyAndClearStringBuilder(List<DescriptionFragment> fragments,
-                                                           StringBuilder sb, Boolean input, Boolean visible) {
+    private static void addIfNotEmptyAndClearStringBuilder(List<DescriptionFragment> fragments, StringBuilder sb,
+                                                           DescriptionFragmentType fragmentType) {
         if (sb.length() > 0) {
-            String str = sb.toString();
-
-            if (input && str.contains(VALUE)) {
-                String[] keyValue = str.split(VALUE);
-                fragments.add(new DescriptionFragment(keyValue[0], input, visible, keyValue[1]));
-            } else {
-                fragments.add(new DescriptionFragment(str, input, visible));
-            }
-
+            DescriptionFragment fragment = factory.create(fragmentType, sb.toString());
+            fragments.add(fragment);
         }
 
         sb.delete(0, sb.length());
@@ -67,7 +73,7 @@ public class DescriptionParser {
     public static Map<String, String> extractParameters(final String description) {
         Map<String, String> parameters = new LinkedHashMap();
         DescriptionParser.parseDescription(description).stream()
-                .filter(x -> x.getInput())
+                .filter(x -> x instanceof InputFragment)
                 .forEach(x ->parameters.put(x.getText(), x.getValue()));
         return parameters;
     }

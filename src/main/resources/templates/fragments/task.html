@@ -5,6 +5,9 @@
         <div th:case="'rds'">
             <div th:replace="fragments/rds.html :: rds"/>
         </div>
+        <div th:case="'iam_trusted_policy'">
+            <div th:replace="fragments/iam_trusted_policy.html :: iam_trusted_policy"/>
+        </div>
         <div th:case="*"/>
     </th:block>
 </div>

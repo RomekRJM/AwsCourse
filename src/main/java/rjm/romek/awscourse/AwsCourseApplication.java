@@ -2,12 +2,17 @@ package rjm.romek.awscourse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@ComponentScan("rjm.romek.awscourse")
-public class AwsCourseApplication {
+public class AwsCourseApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(AwsCourseApplication.class, args);
+	}
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(AwsCourseApplication.class);
 	}
 }

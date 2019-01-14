@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="iam_trusted_policy">
+<pre>
+    <code>
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::288864158121:role/dev-ocd-euw1-awscourse-APPLICATION"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+    </code>
+</pre>
+</div>
+</html>

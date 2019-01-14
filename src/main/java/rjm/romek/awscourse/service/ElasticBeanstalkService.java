@@ -10,7 +10,8 @@ import com.amazonaws.services.elasticbeanstalk.model.DescribeEnvironmentHealthRe
 @Service
 public class ElasticBeanstalkService {
 
-    private static final String OK = "Ok";
+    private static final String ALL = "All";
+    private static final String GREEN = "Green";
 
     private final AWSElasticBeanstalk amazonElasticBeanstalk;
 
@@ -22,9 +23,11 @@ public class ElasticBeanstalkService {
     public boolean environmentHealthy(String environmentName) {
         DescribeEnvironmentHealthResult describeEnvironmentHealthResult =
                 amazonElasticBeanstalk.describeEnvironmentHealth(
-                        new DescribeEnvironmentHealthRequest().withEnvironmentName(environmentName)
+                        new DescribeEnvironmentHealthRequest()
+                                .withEnvironmentName(environmentName)
+                                .withAttributeNames(ALL)
                 );
 
-        return OK.equals(describeEnvironmentHealthResult.getHealthStatus());
+        return GREEN.equals(describeEnvironmentHealthResult.getColor());
     }
 }

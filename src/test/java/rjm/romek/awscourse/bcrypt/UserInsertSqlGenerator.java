@@ -10,9 +10,7 @@ import com.google.common.collect.ImmutableList;
 public class UserInsertSqlGenerator {
 
     private List<UserInsertSql> userInsertSqls = ImmutableList.of(
-            UserInsertSql.builder().withUserName("tester").withPassword("tester").build(),
-            UserInsertSql.builder().withUserName("pusiak").withPassword("pusiak").build(),
-            UserInsertSql.builder().withUserName("rjm").withPassword("rjm").build()
+            UserInsertSql.builder().withUserName("tester").withPassword("tester").build()
     );
 
     @Test

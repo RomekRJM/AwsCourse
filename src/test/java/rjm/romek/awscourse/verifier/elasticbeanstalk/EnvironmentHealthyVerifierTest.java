@@ -51,14 +51,14 @@ public class EnvironmentHealthyVerifierTest {
 
     @Test
     public void isCompletedShouldReturnTrue() {
-        when(describeEnvironmentHealthResult.getHealthStatus()).thenReturn("Ok");
+        when(describeEnvironmentHealthResult.getColor()).thenReturn("Green");
 
         assertTrue(environmentHealthyVerifier.isCompleted(USER_TASK));
     }
 
     @Test
     public void isCompletedShouldReturnFalse() {
-        when(describeEnvironmentHealthResult.getHealthStatus()).thenReturn("Error");
+        when(describeEnvironmentHealthResult.getColor()).thenReturn("Red");
 
         assertFalse(environmentHealthyVerifier.isCompleted(USER_TASK));
     }
