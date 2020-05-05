@@ -67,6 +67,7 @@ public class ChapterController {
         if (chapter.isPresent()) {
             return new ModelAndView(PATH, prepareModelMap(userPrincipal.getUser(), chapter.get()));
         } else {
+            logger.info("User " + userPrincipal.getUsername() + " picked wrong chapter.");
             return new ModelAndView(REDIRECT404);
         }
     }

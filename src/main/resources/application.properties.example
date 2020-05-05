@@ -5,7 +5,7 @@ credentials.path=credentials.csv
 spring.profiles.active=dev
 
 spring.jpa.hibernate.ddl-auto=create
-spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL55Dialect
 spring.datasource.initialization-mode=always
 spring.datasource.platform=mysql
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver

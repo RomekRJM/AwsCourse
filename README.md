@@ -7,28 +7,39 @@ Cloned from: https://github.com/RomekRJM/AwsCourse
 Installation
 ---------------
 1. Install ebcli https://aws.amazon.com/getting-started/tutorials/set-up-command-line-elastic-beanstalk/.
-2. Run following command in awscourse dir ``eb create -db -db.engine mysql -c awscourse``.
+2. Run following command in awscourse dir ``eb create -db -db.engine mysql -db.version 5.7.28 -c awscourse awscourse``.
 3. Follow instructions on the screen, example:
 ```bash
-Enter Environment Name
-(default is awscourse-dev): awscourse
+eb create -db -db.engine mysql -db.version 5.7.28 -c awscourse awscourse
 
-Select a load balancer type
-1) classic
-2) application
-3) network
-(default is 2):
-
-Would you like to enable Spot Fleet requests for this environment?
-(y/N): N
-
-Enter an RDS DB username (default is "ebroot"): awscourse
+Enter an RDS DB username (default is "ebroot"):
 Enter an RDS DB master password:
 Retype password to confirm:
-
-2.0+ Platforms require a service role. We will attempt to create one for you. You can specify your own role using the --service-role option.
-Type "view" to see the policy, or just press ENTER to continue:
+Uploading: [##################################################] 100% Done...
+Environment details for: awscourse
+  Application name: awscourse
+  Region: eu-west-1
+  Deployed Version: app-e852-200331_113427
+  Environment ID: e-ydcn4rpmsi
+  Platform: arn:aws:elasticbeanstalk:eu-west-1::platform/Tomcat 8.5 with Java 8 running on 64bit Amazon Linux/3.3.4
+  Tier: WebServer-Standard-1.0
+  CNAME: awscourse.eu-west-1.elasticbeanstalk.com
+  Updated: 2020-03-31 09:35:59.151000+00:00
 ```
+4. Set spring profile: `eb setenv SPRING_PROFILES_ACTIVE=prod`
+```bash
+2020-03-31 09:48:35    INFO    Environment update is starting.
+2020-03-31 09:48:43    INFO    Updating environment awscourse's configuration settings.
+2020-03-31 09:49:49    INFO    Successfully deployed new configuration to environment.
+```
+5. Set server port to 5000 as Beanstalk requires it: `eb setenv SERVER_PORT=5000`
+```bash
+2020-03-31 09:48:35    INFO    Environment update is starting.
+2020-03-31 09:48:43    INFO    Updating environment awscourse's configuration settings.
+2020-03-31 09:49:49    INFO    Successfully deployed new configuration to environment.
+```
+6. Build war file ```mvn clean package```
+7. Deploy application ```eb deploy```
 4. Application requires following permissions to work:
 ```json
 {
